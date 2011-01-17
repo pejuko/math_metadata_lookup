@@ -36,10 +36,10 @@ module MathMetadata
         person = []
     
         page.scan(self.class::AUTHORS_RE) do |match|
-          person = [match[0], []]
-          match[1].scan(self.class::AUTHOR_RE) do |form|
-            person[1] << form[0]
-          end if match[1]
+          person = [match[0].to_s.strip, match[1].to_s.strip, []]
+          match[2].scan(self.class::AUTHOR_RE) do |form|
+            person[2] << form[0]
+          end if match[2]
           forms << person if person.size > 0
         end 
       end
@@ -49,14 +49,15 @@ module MathMetadata
         forms.each do |person|
           case format
           when :text
-            result += %~Preferred: #{person[0]}~
+            result += %~Id: #{person[1]}\nPreferred: #{person[0]}~
           when :html
             result += %~
     <div class="author">
+        <div class="author_id">Id: #{::CGI.escapeHTML(person[1])}</div>
         <div class="preferred">Preferred: #{::CGI.escapeHTML(person[0])}</div>~
           end
 
-          person[1].each do |form|
+          person[2].each do |form|
             case format
             when :text
               result += %~

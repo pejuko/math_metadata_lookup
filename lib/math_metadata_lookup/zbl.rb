@@ -13,7 +13,7 @@ module MathMetadata
     
     AUTHOR_URL ="http://www.zentralblatt-math.org/zbmath/authors/?q=%s"
 
-    AUTHORS_RE = %r{<div class="name">\s*<strong>(.*?)</strong>.*?<div class="table">\s*<div class="title">Spellings:</div>\s*(.*?)\s*</div>}mi
+    AUTHORS_RE = %r{<div class="name">\s*<strong>(.*?)</strong>.*?Author-Id:\s*</div>\s*([^ <]+)\s*</div>.*?<div class="table">\s*<div class="title">Spellings:</div>\s*(.*?)\s*</div>}mi
     AUTHOR_RE = %r{(.*?)\s*\[\d+\](?:;\s*)?}
     
     

@@ -4,6 +4,7 @@
 require 'htmlentities'
 require 'open-uri'
 require 'i18n'
+require 'cgi'
 
 module MathMetadata
 
@@ -50,13 +51,28 @@ module MathMetadata
           case format
           when :text
             result += %~Preferred: #{person[0]}~
+          when :html
+            result += %~
+    <div class="author">
+        <div class="preferred">Preferred: #{::CGI.escapeHTML(person[0])}</div>~
           end
+
           person[1].each do |form|
             case format
             when :text
               result += %~
 Other: #{form}~
+            when :html
+              result += %~
+        <div class="other">Other: #{::CGI.escapeHTML(form)}</div>~
             end
+          end
+
+          case format
+          when :html
+            result += %~
+    </div>
+~
           end
         end
 
@@ -118,6 +134,18 @@ Year: #{metadata[:year]}
 Language: #{metadata[:language]}
 MSC: #{metadata[:msc].join(", ")}
 Pages: #{metadata[:range]}
+~
+        when :html
+          result += %~
+    <div class="article">
+        Journal/Proceeding: <span class="journal">#{::CGI.escapeHTML metadata[:proceeding]}</span><br />
+        Title: <span class="title">#{::CGI.escapeHTML metadata[:title]}</span><br />
+        Authors: <span class="authors">#{::CGI.escapeHTML metadata[:authors].join("; ")}</span><br />
+        Year: <span class="year">#{::CGI.escapeHTML metadata[:year]}</span><br />
+        Language: <span class="lang">#{::CGI.escapeHTML metadata[:language]}</span><br />
+        MSC: <span class="msc">#{::CGI.escapeHTML metadata[:msc].join(", ")}</span><br />
+        Pages: <span class="msc">#{::CGI.escapeHTML metadata[:range]}</span><br />
+    </div>
 ~
         end
 

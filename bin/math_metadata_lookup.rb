@@ -66,6 +66,14 @@ when :ruby
   pp result
 when :yaml
   puts result.to_yaml
+when :html
+  result.each do |site|
+    puts %~
+<div class="site">
+    <h3>Site: #{site[:name]}</h3>
+    #{site[:result]}
+</div>~
+  end
 else
   result.each do |site|
     next unless site[:result]

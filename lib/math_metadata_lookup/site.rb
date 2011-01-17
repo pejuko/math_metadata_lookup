@@ -6,7 +6,10 @@ require 'open-uri'
 require 'i18n'
 require 'cgi'
 
+
 module MathMetadata
+
+  SITES = []
 
   # Abstract class
   class Site 
@@ -19,14 +22,6 @@ module MathMetadata
       SITES << site
     end
 
-    def normalize_name( name )
-      trans = I18n.transliterate( name.to_s )
-  
-      # vyresim: Surname, N.M. => Surname, N. M.
-      # mrev to jinak nenajde
-      trans.gsub( /([^\s,])?\.([^\s,])/, '\1. \2' )
-    end
-  
   
     def author_name_forms( name, format=:ruby )
       forms = []
@@ -171,7 +166,16 @@ Keywords: #{metadata[:keywords].join('; ')}
   
   
   protected
+
+    def normalize_name( name )
+      trans = I18n.transliterate( name.to_s )
   
+      # vyresim: Surname, N.M. => Surname, N. M.
+      # mrev to jinak nenajde
+      trans.gsub( /([^\s,])?\.([^\s,])/, '\1. \2' )
+    end
+  
+
     def nwords(s)
       s.split(" ")[0...@options[:nwords].to_i].join(" ")
     end

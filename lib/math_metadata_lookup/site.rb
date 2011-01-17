@@ -99,17 +99,16 @@ Other: #{form}~
       metadata[:authors] = []
       page =~ self.class::ARTICLE_AUTHORS_RE
       $1.to_s.strip.scan(self.class::ARTICLE_AUTHOR_RE) do |match|
+        pp match
         metadata[:authors] << match[0].to_s.strip
       end
       
-      mscs = []
+      metadata[:msc] = []
       page =~ self.class::ARTICLE_MSCS_RE
       $1.to_s.strip.scan(self.class::ARTICLE_MSC_RE) do |match|
         # $1 -- code; $2 -- description
-        mscs << $1.to_s.strip
+        metadata[:msc] << $1.to_s.strip
       end
-      metadata[:msc] = mscs
-
       
       page =~ self.class::ARTICLE_PROCEEDING_RE
       metadata[:proceeding] = $1.to_s.strip
@@ -120,12 +119,17 @@ Other: #{form}~
       page =~ self.class::ARTICLE_YEAR_RE
       metadata[:year] = $1.to_s.strip
 
-      issn = []
+      metadata[:issn] = []
       page =~ self.class::ARTICLE_ISSNS_RE
       $1.to_s.strip.scan(self.class::ARTICLE_ISSN_RE) do |match|
-        issn << $1.to_s.strip
+        metadata[:issn] << $1.to_s.strip
       end
-      metadata[:issn] = issn
+
+      metadata[:keywords] = []
+      page =~ self.class::ARTICLE_KEYWORDS_RE
+      $1.to_s.strip.scan(self.class::ARTICLE_KEYWORD_RE) do |match|
+        metadata[:keywords] << $1.to_s.strip
+      end
   
       return nil if metadata[:title].empty?
 
@@ -142,6 +146,7 @@ Language: #{metadata[:language]}
 MSC: #{metadata[:msc].join(", ")}
 Pages: #{metadata[:range]}
 ISSN: #{metadata[:issn].join('; ')}
+Keywords: #{metadata[:keywords].join('; ')}
 ~
         when :html
           result += %~
@@ -154,6 +159,7 @@ ISSN: #{metadata[:issn].join('; ')}
         MSC: <span class="msc">#{::CGI.escapeHTML metadata[:msc].join(", ")}</span><br />
         Pages: <span class="pages">#{::CGI.escapeHTML metadata[:range]}</span><br />
         ISSN: <span class="issn">#{::CGI.escapeHTML metadata[:issn].join('; ')}</span><br />
+        Keywords: <span class="keywords">#{::CGI.escapeHTML metadata[:keywords].join('; ')}</span><br />
     </div>
 ~
         end

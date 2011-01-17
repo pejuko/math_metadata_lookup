@@ -31,6 +31,8 @@ module MathMetadata
     ARTICLE_YEAR_RE = %r{<a href="/mathscinet/search/publications\.html[^"]*">\s*\(?(\d{4})\)?, </a>}mi
     ARTICLE_ISSNS_RE = %r{(ISSN.*?)<br>}mi
     ARTICLE_ISSN_RE = %r{ISSN\s*(.........)}mi
+    ARTICLE_KEYWORDS_RE = %r{<p><i>Keywords:</i>\s*(.*?)\s*</p>}mi
+    ARTICLE_KEYWORD_RE = %r{([^;]) ?}mi
   end # MRev
 
 end

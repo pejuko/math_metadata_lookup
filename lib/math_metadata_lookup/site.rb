@@ -40,9 +40,8 @@ module MathMetadata
           match[1].scan(self.class::AUTHOR_RE) do |form|
             person[1] << form[0]
           end if match[1]
+          forms << person if person.size > 0
         end 
-    
-        forms << person if person.size > 0
       end
     
       if format != :ruby
@@ -99,7 +98,6 @@ Other: #{form}~
       metadata[:authors] = []
       page =~ self.class::ARTICLE_AUTHORS_RE
       $1.to_s.strip.scan(self.class::ARTICLE_AUTHOR_RE) do |match|
-        pp match
         metadata[:authors] << match[0].to_s.strip
       end
       

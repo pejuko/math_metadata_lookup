@@ -119,6 +119,13 @@ Other: #{form}~
 
       page =~ self.class::ARTICLE_YEAR_RE
       metadata[:year] = $1.to_s.strip
+
+      issn = []
+      page =~ self.class::ARTICLE_ISSNS_RE
+      $1.to_s.strip.scan(self.class::ARTICLE_ISSN_RE) do |match|
+        issn << $1.to_s.strip
+      end
+      metadata[:issn] = issn
   
       return nil if metadata[:title].empty?
 
@@ -134,6 +141,7 @@ Year: #{metadata[:year]}
 Language: #{metadata[:language]}
 MSC: #{metadata[:msc].join(", ")}
 Pages: #{metadata[:range]}
+ISSN: #{metadata[:issn].join('; ')}
 ~
         when :html
           result += %~
@@ -144,7 +152,8 @@ Pages: #{metadata[:range]}
         Year: <span class="year">#{::CGI.escapeHTML metadata[:year]}</span><br />
         Language: <span class="lang">#{::CGI.escapeHTML metadata[:language]}</span><br />
         MSC: <span class="msc">#{::CGI.escapeHTML metadata[:msc].join(", ")}</span><br />
-        Pages: <span class="msc">#{::CGI.escapeHTML metadata[:range]}</span><br />
+        Pages: <span class="pages">#{::CGI.escapeHTML metadata[:range]}</span><br />
+        ISSN: <span class="issn">#{::CGI.escapeHTML metadata[:issn].join('; ')}</span><br />
     </div>
 ~
         end

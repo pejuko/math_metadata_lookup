@@ -29,6 +29,8 @@ module MathMetadata
     ARTICLE_PROCEEDING_RE = %r{<a href="[^"j]*?journals[^"]*">(.*?)</a>}mi
     ARTICLE_RANGE_RE = %r{</a> \d+(?:-\d+)?,\s*(\d+-\d+).*?ISSN}
     ARTICLE_YEAR_RE = %r{</a>\s*\d+-\d+, \d+-\d+ \((\d+)\)\.}mi
+    ARTICLE_ISSNS_RE = %r{(ISSN.*?)<br>}mi
+    ARTICLE_ISSN_RE = %r{ISSN\s*(.........)}mi
   end # ZBL
 
 end

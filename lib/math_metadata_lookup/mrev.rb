@@ -29,6 +29,8 @@ module MathMetadata
     ARTICLE_PROCEEDING_RE = %r{<a href="/mathscinet/search/journaldoc\.html\?cn=[^"]*">\s*<em>(.*?)</em>\s*</a>}mi
     ARTICLE_RANGE_RE = %r{(\d+–\d+)}mi
     ARTICLE_YEAR_RE = %r{<a href="/mathscinet/search/publications\.html[^"]*">\s*\(?(\d{4})\)?, </a>}mi
+    ARTICLE_ISSNS_RE = %r{(ISSN.*?)<br>}mi
+    ARTICLE_ISSN_RE = %r{ISSN\s*(.........)}mi
   end # MRev
 
 end

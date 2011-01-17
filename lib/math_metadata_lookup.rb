@@ -1,3 +1,6 @@
+# -*-: coding: utf-8 -*-
+# vi: fenc=utf-8:expandtab:ts=2:sw=2:sts=2
+
 require 'rubygems'
 require 'htmlentities'
 require 'open-uri'
@@ -27,7 +30,7 @@ module MathMetadata
       end
 
       sites.each do |klass|
-        site = klass.new
+        site = klass.new(:verbose => @options[:verbose])
 
         entry = {:site => klass::CODE, :name => klass::NAME, :url => klass::URL}
         entry[:result] = site.send(meth, *args)
@@ -60,7 +63,7 @@ module MathMetadata
     end
   
   
-    def author_name_forms( name )
+    def author_name_forms( name, format=:ruby )
       forms = []
       page = fetch_author(name)
   
@@ -77,11 +80,30 @@ module MathMetadata
         forms << person if person.size > 0
       end
     
+      if format != :ruby
+        result = ""
+        forms.each do |person|
+          case format
+          when :text
+            result += %~Preferred: #{person[0]}~
+          end
+          person[1].each do |form|
+            case format
+            when :text
+              result += %~
+Other: #{form}~
+            end
+          end
+        end
+
+        return result
+      end
+
       forms
     end
   
   
-    def article( id, title="", authors=[])
+    def article( id, title="", authors=[], format=:ruby )
       metadata = {}
       page = fetch_article(id, title, authors)
   
@@ -114,9 +136,30 @@ module MathMetadata
       
       page =~ self.class::ARTICLE_RANGE_RE
       metadata[:range] = $1.to_s.strip
-      metadata[:year] = $2.to_s.strip
+
+      page =~ self.class::ARTICLE_YEAR_RE
+      metadata[:year] = $1.to_s.strip
   
       return nil if metadata[:title].empty?
+
+      if format != :ruby
+        result = ""
+        case format
+        when :text
+          result += %~Id: #{metadata[:id]}
+Journal/Proceeding: #{metadata[:proceeding]}
+Title: #{metadata[:title]}
+Authors: #{metadata[:authors].join("; ")}
+Year: #{metadata[:year]}
+Language: #{metadata[:language]}
+MSC: #{metadata[:msc].join(", ")}
+Pages: #{metadata[:range]}
+~
+        end
+
+        return result
+      end
+
       metadata
     end
   
@@ -175,13 +218,14 @@ module MathMetadata
     
     
     ARTICLE_ID_RE = %r{<strong>(.*?)</strong>}mi
-    ARTICLE_TITLE_RE = %r{<span class="title">(.*?)</span>}mi
+    ARTICLE_TITLE_RE = %r{<span class="title">(?:<span class="searchHighlight">)?(.*?)</span>.*?<span class="sumlang">\(?(.*?)\)?</span>}mi
     ARTICLE_AUTHORS_RE = %r{<br />(<a href="/mathscinet/search/publications.html[^"]*">.*?</a>)<br />}mi
     ARTICLE_AUTHOR_RE = %r{<a href="/mathscinet/search/publications.html[^"]*">(.*?)</a>}mi
     ARTICLE_MSCS_RE = %r{<a href="/mathscinet/search/mscdoc.html\?code=[^"]*">(.*?)</a>}mi
-    ARTICLE_MSC_RE = %r{\s+}mi
-    ARTICLE_PROCEEDING_RE = %r{<em> (.*?) </em>}mi
-    ARTICLE_RANGE_RE = %r{(\S+--\S+)}
+    ARTICLE_MSC_RE = %r{([^, ]+)}mi
+    ARTICLE_PROCEEDING_RE = %r{<a href="/mathscinet/search/journaldoc\.html\?cn=[^"]*">\s*<em>(.*?)</em>\s*</a>}mi
+    ARTICLE_RANGE_RE = %r{(\d+–\d+)}mi
+    ARTICLE_YEAR_RE = %r{<a href="/mathscinet/search/publications\.html[^"]*">\s*\(?(\d{4})\)?, </a>}mi
     
     ARTICLE_ID_URL = "http://www.ams.org/msnmain?preferred_language=en&pg3=MR&s3=%s&l=20&reference_lists=show&simple_headlines=full&contributed_items=show&redirect=Providence%%2C+RI+USA&Submit=Start+Search&fn=130&form=basicsearch"
     ARTICLE_URL = "http://www.ams.org/mathscinet/search/publdoc.html?arg3=&co4=AND&co5=AND&co6=AND&co7=AND&dr=all&pg4=TI&pg5=AUCN&pg6=PC&pg7=ALLF&pg8=ET&r=1&s4=%s&s5=%s&s6=&s7=&s8=All&yearRangeFirst=&yearRangeSecond=&yrop=eq"
@@ -233,8 +277,9 @@ module MathMetadata
     ARTICLE_AUTHOR_RE = %r{<a href="\?q=[^"]*">(.*?)</a>}mi
     ARTICLE_MSCS_RE = %r{<dd>(.*?)</dd>}mi
     ARTICLE_MSC_RE = %r{<a href=".*?">(.*?)</a>}mi
-    ARTICLE_PROCEEDING_RE =
-    ARTICLE_RANGE_RE = %r{<br>.*?, (\S+-\S+) \((.*?)\). <br>}mi
+    ARTICLE_PROCEEDING_RE = %r{<a href="[^"j]*?journals[^"]*">(.*?)</a>}mi
+    ARTICLE_RANGE_RE = %r{</a> \d+(?:-\d+)?,\s*(\d+-\d+).*?ISSN}
+    ARTICLE_YEAR_RE = %r{</a>\s*\d+-\d+, \d+-\d+ \((\d+)\)\.}mi
 
 =begin
       #page_zbl =~ %r{<a href="\?q=an:.*?complete">(.*?)</a>.*?<br><b>(<a href="\?q=ai:[^"]*">.*?</a>)<br>(.*?)\.</b>\s*\((.*?)\)<br>.*?<a href="../journals/search/\?an=[^"]*">(.*?)</a> ([^,]*), ([^ ]*) \((.*?)\). <br>}mi

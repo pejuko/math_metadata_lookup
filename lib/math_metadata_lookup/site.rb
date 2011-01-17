@@ -77,61 +77,54 @@ Other: #{form}~
       forms
     end
   
-  
+    def method_missing(meth, *args)
+      case meth
+      when /^get_article_(.*)_s/
+        res = []
+        re = eval("self.class::ARTICLE_#{$1.upcase}_RE")
+        re_s = eval("self.class::ARTICLE_#{$1.upcase}S_RE")
+        page = args.first
+        page =~ re_s
+        $1.to_s.strip.scan(re) do |match|
+          res << match[0].to_s.strip
+        end
+        return res
+      when /^get_article_(.*)/
+        page = args.first
+        match = eval("self.class::ARTICLE_#{$1.upcase}_RE").match(page).to_a.map{|x| x.to_s.strip}
+        match.shift
+        return match.first if args[1].to_i <= 1
+        return match
+      end
+    end
+
     def article( id, title="", authors=[], format=:ruby )
       metadata = {}
       page = fetch_article(id, title, authors)
   
       return metadata unless page
   
-      page =~ self.class::ARTICLE_ID_RE
-      metadata[:id] = $1.to_s.strip
-      
-      page =~ self.class::ARTICLE_TITLE_RE
-      metadata[:title] = $1.to_s.strip
-      metadata[:language] = $2.to_s.strip
-      
-      metadata[:authors] = []
-      page =~ self.class::ARTICLE_AUTHORS_RE
-      $1.to_s.strip.scan(self.class::ARTICLE_AUTHOR_RE) do |match|
-        metadata[:authors] << match[0].to_s.strip
-      end
-      
-      metadata[:msc] = []
-      page =~ self.class::ARTICLE_MSCS_RE
-      $1.to_s.strip.scan(self.class::ARTICLE_MSC_RE) do |match|
-        # $1 -- code; $2 -- description
-        metadata[:msc] << $1.to_s.strip
-      end
-      
-      page =~ self.class::ARTICLE_PROCEEDING_RE
-      metadata[:proceeding] = $1.to_s.strip
-      
-      page =~ self.class::ARTICLE_RANGE_RE
-      metadata[:range] = $1.to_s.strip
-
-      page =~ self.class::ARTICLE_YEAR_RE
-      metadata[:year] = $1.to_s.strip
-
-      metadata[:issn] = []
-      page =~ self.class::ARTICLE_ISSNS_RE
-      $1.to_s.strip.scan(self.class::ARTICLE_ISSN_RE) do |match|
-        metadata[:issn] << $1.to_s.strip
-      end
-
-      metadata[:keywords] = []
-      page =~ self.class::ARTICLE_KEYWORDS_RE
-      $1.to_s.strip.scan(self.class::ARTICLE_KEYWORD_RE) do |match|
-        metadata[:keywords] << $1.to_s.strip
-      end
+      metadata[:id] = get_article_id page
+      metadata[:title], metadata[:language] = get_article_title page, 2
+      metadata[:authors] = get_article_author_s page
+      metadata[:msc] = get_article_msc_s page
+      metadata[:proceeding] = get_article_proceeding page
+      metadata[:range] = get_article_range page
+      metadata[:year] = get_article_year page
+      metadata[:keywords] = get_article_keyword_s page
+      metadata[:issn] = get_article_issn_s page
   
       return nil if metadata[:title].empty?
+      return metadata if format == :ruby
 
-      if format != :ruby
-        result = ""
-        case format
-        when :text
-          result += %~Id: #{metadata[:id]}
+      format_article metadata, format
+    end
+  
+    def format_article( metadata, format )
+      result = ""
+      case format
+      when :text
+        result += %~Id: #{metadata[:id]}
 Journal/Proceeding: #{metadata[:proceeding]}
 Title: #{metadata[:title]}
 Authors: #{metadata[:authors].join("; ")}
@@ -142,8 +135,8 @@ Pages: #{metadata[:range]}
 ISSN: #{metadata[:issn].join('; ')}
 Keywords: #{metadata[:keywords].join('; ')}
 ~
-        when :html
-          result += %~
+      when :html
+        result += %~
     <div class="article">
         Journal/Proceeding: <span class="journal">#{::CGI.escapeHTML metadata[:proceeding]}</span><br />
         Title: <span class="title">#{::CGI.escapeHTML metadata[:title]}</span><br />
@@ -156,15 +149,11 @@ Keywords: #{metadata[:keywords].join('; ')}
         Keywords: <span class="keywords">#{::CGI.escapeHTML metadata[:keywords].join('; ')}</span><br />
     </div>
 ~
-        end
-
-        return result
       end
 
-      metadata
+      result
     end
-  
-  
+
   protected
 
     def normalize_name( name )

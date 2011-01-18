@@ -8,7 +8,7 @@ $:.unshift File.expand_path(File.join(File.dirname(__FILE__), "../lib"))
 
 def print_help
   print $0
-  puts " <article|author> -t <title> -a <author> -i <id> -s <mrev|zbl> -f <text|xml|html|ruby|yaml>"
+  puts " <article|author> -t <title> -a <author> -i <id> -s <mrev|zbl> -f <text|html|ruby|yaml>"
 end
 
 require 'pp'
@@ -52,11 +52,12 @@ pp $options if $options[:verbose]
 sites = $options[:sites].size == 0 ? :all : $options[:sites].map{|s| s.to_sym}
 l = MathMetadata::Lookup.new :sites => sites, :verbose => $options[:verbose]
 
+f = $options[:format] == :yaml ? :ruby : $options[:format]
 result = case $command
 when 'article'
-  l.article $options[:id], $options[:title].to_s, $options[:authors], $options[:format]
+  l.article $options[:id], $options[:title].to_s, $options[:authors], f
 when 'author'
-  l.author_name_forms $options[:authors].first, $options[:format]
+  l.author_name_forms $options[:authors].first, f
 else
   print_help
 end

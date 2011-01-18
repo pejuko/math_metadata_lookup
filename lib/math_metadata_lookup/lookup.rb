@@ -35,5 +35,3 @@ module MathMetadata
   end # Lookup
 
 end # module
-
-

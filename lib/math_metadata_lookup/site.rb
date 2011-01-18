@@ -27,6 +27,9 @@ module MathMetadata
       page = args.first
 
       case meth
+      when /^list_of_(.*)\?$/
+        re = eval("self.class::LIST_OF_#{$1.upcase}_RE")
+        return page =~ re
       when /^get_(.*)_m$/
         re = eval("self.class::#{$1.upcase}_RE")
         re_s = eval("self.class::#{$1.upcase}S_RE")
@@ -75,13 +78,9 @@ module MathMetadata
       MathMetadata.format_author(forms, format)    
     end
   
-
-    def article( id, title="", authors=[], format=:ruby )
+    
+    def get_article( page )
       metadata = {}
-      page = fetch_article(id, title, authors)
-  
-      return metadata unless page
-  
       metadata[:id] = get_article_id page
       metadata[:title], metadata[:language] = get_article_title page, 2
       metadata[:authors] = get_article_author_s page
@@ -91,11 +90,33 @@ module MathMetadata
       metadata[:year] = get_article_year page
       metadata[:keywords] = get_article_keyword_s page
       metadata[:issn] = get_article_issn_s page
-  
-      return nil if metadata[:title].empty?
-      return metadata if format == :ruby
+      metadata
+    end
 
-      MathMetadata.format_article metadata, format
+    def get_article_list( page )
+      articles = []
+      page.scan(self.class::ARTICLE_ENTRY_RE) do |match|
+        articles << article(match[0]).first
+      end
+      articles
+    end
+
+    def article( id, title="", authors=[], format=:ruby )
+      page = fetch_article(id, title, authors)
+      articles = []
+  
+      return metadata unless page
+
+      if list_of_articles?(page)
+        articles = get_article_list page
+      else
+        articles << get_article(page)
+      end
+  
+      return nil if articles.size == 0
+      return articles if format == :ruby
+
+      articles.map{|a| MathMetadata.format_article a, format}.join
     end
 
 
@@ -132,14 +153,18 @@ module MathMetadata
       fetch_page(url)
     end
   
+
+    def join_article_authors( authors )
+      authors.collect { |author| URI.escape normalize_name(author) }.join('; ') || ''
+    end
   
     def fetch_article(id, title="", authors=[])
       url = self.class::ARTICLE_ID_URL % id.to_s.strip
       if id.to_s.strip.empty?
-        author = authors.collect { |author| normalize_name(author) }.join('; ') || ''
+        author = join_article_authors authors
         title = '' if not title.kind_of?(String)
         title = nwords(title) if @options[:nwords]
-        url = self.class::ARTICLE_URL % [URI.escape(title), URI.escape(author)]
+        url = self.class::ARTICLE_URL % [URI.escape(title), author]
       end
   
       fetch_page(url)

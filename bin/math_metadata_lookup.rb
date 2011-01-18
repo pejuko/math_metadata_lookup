@@ -8,7 +8,11 @@ $:.unshift File.expand_path(File.join(File.dirname(__FILE__), "../lib"))
 
 def print_help
   print $0
-  puts " <article|author> -t <title> -a <author> -i <id> -s <mrev|zbl> -f <text|html|ruby|yaml>"
+  puts "<article|author> -t <title> -a <author> -i <id> -s <mrev|zbl> -f <text|html|ruby|yaml>"
+  puts "Examples:"
+  puts %~#{$0} article -t "Sobolev embeddings with variable exponent. II"~
+  puts %~#{$0} article -t "Sobolev embeddings" -a "Rakosnik, Jiri" -a "Edmunds, David"~
+  puts %~#{$0} author -a "Vesely, Jiri"~
 end
 
 require 'pp'

@@ -18,7 +18,10 @@ module MathMetadata
 
 
     ARTICLE_ID_URL = "http://www.ams.org/msnmain?preferred_language=en&pg3=MR&s3=%s&l=20&reference_lists=show&simple_headlines=full&contributed_items=show&redirect=Providence%%2C+RI+USA&Submit=Start+Search&fn=130&form=basicsearch"
-    ARTICLE_URL = "http://www.ams.org/mathscinet/search/publdoc.html?arg3=&co4=AND&co5=AND&co6=AND&co7=AND&dr=all&pg4=TI&pg5=AUCN&pg6=PC&pg7=ALLF&pg8=ET&r=1&s4=%s&s5=%s&s6=&s7=&s8=All&yearRangeFirst=&yearRangeSecond=&yrop=eq"
+    ARTICLE_URL = "http://www.ams.org/mathscinet/search/publications.html?pg4=TI&s4=%s&co5=AND&%s&Submit=Search&dr=all&yrop=eq&arg3=&yearRangeFirst=&yearRangeSecond=&pg8=ET&s8=All&review_format=html"
+
+    LIST_OF_ARTICLES_RE = %r{<strong>Matches:</strong>\s*\d*}mi
+    ARTICLE_ENTRY_RE = %r{<div class="headlineText">\s*<a href="/mathscinet/search/publdoc.html[^"]+">\s*<strong>\s*([^< ]+)\s*</strong>\s*<strong>}mi
 
     ARTICLE_ID_RE = %r{<strong>(.*?)</strong>}mi
     ARTICLE_TITLE_RE = %r{<span class="title">(?:<span class="searchHighlight">)?(.*?)</span>.*?<span class="sumlang">\(?(.*?)\)?</span>}mi
@@ -33,6 +36,15 @@ module MathMetadata
     ARTICLE_ISSN_RE = %r{ISSN\s*(.........)}mi
     ARTICLE_KEYWORDS_RE = %r{<p><i>Keywords:</i>\s*(.*?)\s*</p>}mi
     ARTICLE_KEYWORD_RE = %r{([^;]) ?}mi
+
+    def join_article_authors( authors )
+      i = 4
+      authors.collect { |author| 
+        i += 1
+        "pg#{i}=AUCN&s#{i}=#{URI.escape author}&co#{i}=AND"
+      }.join("&")
+    end
+
   end # MRev
 
 end

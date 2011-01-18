@@ -18,7 +18,10 @@ module MathMetadata
     
     
     ARTICLE_ID_URL = "http://www.zentralblatt-math.org/zmath/en/search?q=an:%s"
-    ARTICLE_URL = "http://www.zentralblatt-math.org/zmath/en/search?q=ti:%s&au:%s"
+    ARTICLE_URL = "http://www.zentralblatt-math.org/zmath/en/search?q=ti:%s%%26%s"
+    
+    LIST_OF_ARTICLES_RE = %r{<strong class="middle">Result:</strong>}mi
+    ARTICLE_ENTRY_RE = %r{<span[^>]*?>\s*<a href="\?q=an:([^\&]+)\&format=complete">[^<]+</a>\s*<b>}mi
 
     ARTICLE_ID_RE = %r{<a href="\?q=an:.*?complete">(.*?)</a>}mi
     ARTICLE_TITLE_RE = %r{</a><br>(.*?)\.</b>\s*\((.*?)\)<br>}mi
@@ -33,6 +36,13 @@ module MathMetadata
     ARTICLE_ISSN_RE = %r{ISSN\s*(.........)}mi
     ARTICLE_KEYWORDS_RE = %r{<p><i>Keywords:</i>\s*(.*?)\s*</p>}mi
     ARTICLE_KEYWORD_RE = %r{([^;]+) ?}mi
+
+    protected
+
+    def join_article_authors( authors )
+      authors.collect { |author| "au:#{URI.escape author}" }.join("%26")
+    end
+
   end # ZBL
 
 end

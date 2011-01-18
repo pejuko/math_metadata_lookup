@@ -22,81 +22,58 @@ module MathMetadata
       SITES << site
     end
 
-  
-    def author_name_forms( name, format=:ruby )
-      forms = []
-      page = fetch_author(name)
-  
-      if page
-        person = []
-    
-        page.scan(self.class::AUTHORS_RE) do |match|
-          person = [match[0].to_s.strip, match[1].to_s.strip, []]
-          match[2].scan(self.class::AUTHOR_RE) do |form|
-            person[2] << form[0]
-          end if match[2]
-          forms << person if person.size > 0
-        end 
-      end
-    
-      if format != :ruby
-        result = ""
-        forms.each do |person|
-          case format
-          when :text
-            result += %~Id: #{person[1]}\nPreferred: #{person[0]}~
-          when :html
-            result += %~
-    <div class="author">
-        <div class="author_id">Id: #{::CGI.escapeHTML(person[1])}</div>
-        <div class="preferred">Preferred: #{::CGI.escapeHTML(person[0])}</div>~
-          end
 
-          person[2].each do |form|
-            case format
-            when :text
-              result += %~
-Other: #{form}~
-            when :html
-              result += %~
-        <div class="other">Other: #{::CGI.escapeHTML(form)}</div>~
-            end
-          end
-
-          case format
-          when :html
-            result += %~
-    </div>
-~
-          end
-        end
-
-        return result
-      end
-
-      forms
-    end
-  
     def method_missing(meth, *args)
+      page = args.first
+
       case meth
-      when /^get_article_(.*)_s/
+      when /^get_(.*)_m$/
+        re = eval("self.class::#{$1.upcase}_RE")
+        re_s = eval("self.class::#{$1.upcase}S_RE")
+        m, n = args[1,2]
+        m ||= 1
+        n ||= 1
         res = []
-        re = eval("self.class::ARTICLE_#{$1.upcase}_RE")
-        re_s = eval("self.class::ARTICLE_#{$1.upcase}S_RE")
-        page = args.first
+        page.scan(re_s) do |match|
+          entry = []
+          m.times {|i| entry << match[i].to_s.strip}
+          entry << []
+          match[m].scan(re) do |form|
+            n.times {|i| entry[m] << form[i]}
+          end if match[m]
+          res << entry
+        end 
+        return res
+
+      when /^get_(.*)_s$/
+        res = []
+        re = eval("self.class::#{$1.upcase}_RE")
+        re_s = eval("self.class::#{$1.upcase}S_RE")
         page =~ re_s
         $1.to_s.strip.scan(re) do |match|
           res << match[0].to_s.strip
         end
         return res
-      when /^get_article_(.*)/
-        page = args.first
-        match = eval("self.class::ARTICLE_#{$1.upcase}_RE").match(page).to_a.map{|x| x.to_s.strip}
+
+      when /^get_(.*)$/
+        match = eval("self.class::#{$1.upcase}_RE").match(page).to_a.map{|x| x.to_s.strip}
         match.shift
         return match.first if args[1].to_i <= 1
         return match
       end
     end
+  
+
+    def author_name_forms( name, format=:ruby )
+      forms = []
+
+      page = fetch_author(name)
+      forms = get_author_m page, 2, 1
+
+      return forms if format == :ruby
+      return format_author(forms, format)    
+    end
+  
 
     def article( id, title="", authors=[], format=:ruby )
       metadata = {}
@@ -119,7 +96,44 @@ Other: #{form}~
 
       format_article metadata, format
     end
+
+
+    def format_author( forms, format )
+      result = ""
+      forms.each do |person|
+        case format
+        when :text
+          result += %~Id: #{person[1]}\nPreferred: #{person[0]}~
+        when :html
+          result += %~
+  <div class="author">
+      <div class="author_id">Id: #{::CGI.escapeHTML(person[1])}</div>
+      <div class="preferred">Preferred: #{::CGI.escapeHTML(person[0])}</div>~
+        end
+
+        person[2].each do |form|
+          case format
+          when :text
+            result += %~
+Other: #{form}~
+          when :html
+            result += %~
+      <div class="other">Other: #{::CGI.escapeHTML(form)}</div>~
+          end
+        end
+
+        case format
+        when :html
+          result += %~
+  </div>
+~
+        end
+      end
+
+      return result
+    end
   
+
     def format_article( metadata, format )
       result = ""
       case format

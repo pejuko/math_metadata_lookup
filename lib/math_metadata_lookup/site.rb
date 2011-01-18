@@ -11,18 +11,20 @@ module MathMetadata
 
   SITES = []
 
-  # Abstract class
+  # Abstract class. Inherit in your sites definition.
   class Site 
 
     def initialize( opts={} )
       @options = { :verbose => true }.merge(opts)
     end
 
+    # register new site class
     def self.inherited( site )
       SITES << site
     end
 
 
+    # search for author name forms
     def author_name_forms( args={} )
       opts = {:name => nil, :format => :ruby}.merge(args)
       forms = []
@@ -36,6 +38,7 @@ module MathMetadata
     end
 
 
+    # search for articles
     def article( args={} )
       opts = {:id => nil, :title => "", :authors => [], :format => :ruby}.merge(args)
 

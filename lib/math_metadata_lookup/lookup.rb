@@ -3,6 +3,7 @@
 
 module MathMetadata
 
+  # Main class for searching through all sites
   class Lookup
     attr_accessor :options
 
@@ -12,6 +13,7 @@ module MathMetadata
       @sites = []
     end
 
+    # calls method for each site
     def method_missing(meth, *args)
       result = []
 

@@ -36,6 +36,10 @@ module MathMetadata
     ARTICLE_ISSN_RE = %r{ISSN\s*(.........)}mi
     ARTICLE_KEYWORDS_RE = %r{<p><i>Keywords:</i>\s*(.*?)\s*</p>}mi
     ARTICLE_KEYWORD_RE = %r{([^;]) ?}mi
+    #ARTICLE_REFERENCES_RE = %r{<center>\s*<strong>\s*References\s*</strong>\s*</center>\s*<ol>\s*(.*?)\s*</ol>}mi
+    ARTICLE_REFERENCES_RE = %r{<li>\s*([^:]+:.*?)\s*</li>}
+    # 1=authors, 2=journal, 3=volume/issue, 4=year, 5=range, 6=ref
+    ARTICLE_REFERENCE_RE = %r{([^:]+):(.*?)\s*<span class="bf">\s*(.*?)\s*<\/span>\s*\((\d+)\)\s*(?:,\s*([^ ]+?)\s*<a href="[^"]+"\s*>\s*([^ ]+)\s*.*?)?}mi
 
     def join_article_authors( authors )
       i = 4

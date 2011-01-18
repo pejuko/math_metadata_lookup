@@ -78,6 +78,23 @@ module MathMetadata
       MathMetadata.format_author(forms, format)    
     end
   
+    def get_article_references( page )
+      references = get_article_reference_m page, 0, 6
+
+      # 1=authors, 2=journal, 3=volume/issue, 4=year, 5=range, 6=ref
+      i = 0;
+      references.map! {|r| i+=1; {
+        :number => i,
+        :authors => r[0].shift.to_s.gsub(/<.*?>/,'').strip,
+        :title => r[0].shift.to_s.gsub(/  +/, ' ').strip,
+        :issue => r[0].shift,
+        :year => r[0].shift,
+        :range => r[0].shift,
+        :ref => r[0].shift,
+      }}
+
+      references
+    end
     
     def get_article( page )
       metadata = {}
@@ -90,6 +107,7 @@ module MathMetadata
       metadata[:year] = get_article_year page
       metadata[:keywords] = get_article_keyword_s page
       metadata[:issn] = get_article_issn_s page
+      #metadata[:references] = get_article_references page
       metadata
     end
 

@@ -36,6 +36,9 @@ module MathMetadata
     ARTICLE_ISSN_RE = %r{ISSN\s*(.........)}mi
     ARTICLE_KEYWORDS_RE = %r{<p><i>Keywords:</i>\s*(.*?)\s*</p>}mi
     ARTICLE_KEYWORD_RE = %r{([^;]+) ?}mi
+    ARTICLE_REFERENCES_RE = %r{xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+    # 1=authors, 2=journal, 3=volume/issue, 4=year, 5=range, 6=ref
+    ARTICLE_REFERENCE_RE = %r{xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
 
     protected
 

@@ -23,6 +23,43 @@ module MathMetadata
     end
 
 
+    def author_name_forms( args={} )
+      opts = {:name => nil, :format => :ruby}.merge(args)
+      forms = []
+
+      page = fetch_author(opts[:name])
+      forms = get_author_m page, 2, 1
+
+      return forms if opts[:format] == :ruby
+
+      MathMetadata.format_author(forms, opts[:format])    
+    end
+
+
+    def article( args={} )
+      opts = {:id => nil, :title => "", :authors => [], :format => :ruby}.merge(args)
+
+      page = fetch_article(opts)
+      articles = []
+  
+      return metadata unless page
+
+      if list_of_articles?(page)
+        articles = get_article_list page
+      else
+        articles << get_article(page)
+      end
+  
+      return nil if articles.size == 0
+      return articles if opts[:format] == :ruby
+
+      articles.map{|a| MathMetadata.format_article a, opts[:format]}.join
+    end
+
+
+  protected
+
+
     def method_missing(meth, *args)
       page = args.first
 
@@ -67,17 +104,6 @@ module MathMetadata
     end
   
 
-    def author_name_forms( name, format=:ruby )
-      forms = []
-
-      page = fetch_author(name)
-      forms = get_author_m page, 2, 1
-
-      return forms if format == :ruby
-
-      MathMetadata.format_author(forms, format)    
-    end
-  
     def get_article_references( page )
       references = get_article_reference_m page, 0, 6
 
@@ -95,6 +121,7 @@ module MathMetadata
 
       references
     end
+
     
     def get_article( page )
       metadata = {}
@@ -111,34 +138,15 @@ module MathMetadata
       metadata
     end
 
+
     def get_article_list( page )
       articles = []
       page.scan(self.class::ARTICLE_ENTRY_RE) do |match|
-        articles << article(match[0]).first
+        articles << article(:id => match[0]).first
       end
       articles
     end
 
-    def article( id, title="", authors=[], format=:ruby )
-      page = fetch_article(id, title, authors)
-      articles = []
-  
-      return metadata unless page
-
-      if list_of_articles?(page)
-        articles = get_article_list page
-      else
-        articles << get_article(page)
-      end
-  
-      return nil if articles.size == 0
-      return articles if format == :ruby
-
-      articles.map{|a| MathMetadata.format_article a, format}.join
-    end
-
-
-  protected
 
     def normalize_name( name )
       trans = I18n.transliterate( name.to_s )
@@ -176,10 +184,12 @@ module MathMetadata
       authors.collect { |author| URI.escape normalize_name(author) }.join('; ') || ''
     end
   
-    def fetch_article(id, title="", authors=[])
-      url = self.class::ARTICLE_ID_URL % id.to_s.strip
-      if id.to_s.strip.empty?
-        author = join_article_authors authors
+    def fetch_article( args={} )
+      opts = {:id => nil, :title => "", :authors => []}.merge(args)
+      url = self.class::ARTICLE_ID_URL % opts[:id].to_s.strip
+      if opts[:id].to_s.strip.empty?
+        author = join_article_authors opts[:authors]
+        title = opts[:title]
         title = '' if not title.kind_of?(String)
         title = nwords(title) if @options[:nwords]
         url = self.class::ARTICLE_URL % [URI.escape(title), author]

@@ -1,3 +1,6 @@
 * support for references
 * year argument
 * xml output
+* heuristic
+  * joining results
+  * guess relevant article if possible

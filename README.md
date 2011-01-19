@@ -56,4 +56,4 @@ Hash arguments are:
 * **:name** String. Author name.
 * **:format** The same as i previous function.
 
-Returning value depends on :format option. If the option is :ruby it returns array of authors. Author is array with three elements. The first one is preferred form. The second one is site id. The third element is array of strings. Each string represents alternative name forms.
+Returning value depends on :format option. If the option is :ruby it returns array of authors. Author is hash with three elements. It contains :id, :preferred and :forms. :id is id on the site, :preferred is the preferred form of name and :forms is array containing all others forms.

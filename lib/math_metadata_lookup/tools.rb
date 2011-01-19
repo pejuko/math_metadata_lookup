@@ -5,39 +5,37 @@ module MathMetadata
 
   class << self
 
-    def format_author( forms, format )
+    def format_author( author, format )
       result = ""
-      forms.each do |person|
+      case format
+      when :text
+        result += %~Id: #{author[:id]}\nPreferred: #{author[:preferred]}~
+      when :html
+        result += %~
+  <div class="author">
+      <div class="author_id">Id: #{::CGI.escapeHTML(author[:id])}</div>
+      <div class="preferred">Preferred: #{::CGI.escapeHTML(author[:preferred])}</div>~
+      end
+
+      author[:forms].each do |form|
         case format
         when :text
-          result += %~Id: #{person[1]}\nPreferred: #{person[0]}~
-        when :html
           result += %~
-  <div class="author">
-      <div class="author_id">Id: #{::CGI.escapeHTML(person[1])}</div>
-      <div class="preferred">Preferred: #{::CGI.escapeHTML(person[0])}</div>~
-        end
-
-        person[2].each do |form|
-          case format
-          when :text
-            result += %~
 Other: #{form}~
-          when :html
-            result += %~
-      <div class="other">Other: #{::CGI.escapeHTML(form)}</div>~
-          end
-        end
-
-        case format
         when :html
           result += %~
-  </div>
-~
+      <div class="other">Other: #{::CGI.escapeHTML(form)}</div>~
         end
       end
 
-      return result
+      case format
+      when :html
+          result += %~
+  </div>
+~
+      end
+
+      result
     end
   
 

@@ -58,12 +58,12 @@ sites = $options[:sites].size == 0 ? :all : $options[:sites].map{|s| s.to_sym}
 l = MathMetadata::Lookup.new :sites => sites, :verbose => $options[:verbose]
 
 args = $options.dup
-args[:format] = $options[:format] == :yaml ? :ruby : $options[:format]
+args[:format] = $options[:format] == :yaml ? :ruby : $options[:format].to_sym
 result = case $command
 when 'article'
   l.article args
 when 'author'
-  l.author_name_forms :name => $options[:authors].first, :format => args[:format]
+  l.author :name => $options[:authors].first, :format => args[:format]
 else
   print_help
 end

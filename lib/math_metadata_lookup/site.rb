@@ -24,17 +24,20 @@ module MathMetadata
     end
 
 
-    # search for author name forms
-    def author_name_forms( args={} )
+    # search for authors
+    def author( args={} )
       opts = {:name => nil, :format => :ruby}.merge(args)
-      forms = []
+      anf = author_name_forms opts[:name]
 
-      page = fetch_author(opts[:name])
-      forms = get_author_m page, 2, 1
+      authors = []
+      anf.each do |af|
+        entry = {:id => af[1], :preferred => af[0], :forms => af[2]}
+        authors << entry unless entry[:id].to_s.strip.empty?
+      end
 
-      return forms if opts[:format] == :ruby
+      return authors if opts[:format] == :ruby
 
-      MathMetadata.format_author(forms, opts[:format])    
+      authors.map{|a| MathMetadata.format_author(a, opts[:format])}.join
     end
 
 
@@ -106,6 +109,17 @@ module MathMetadata
       end
     end
   
+
+    # search for author name forms
+    def author_name_forms( name )
+      forms = []
+
+      page = fetch_author name
+      forms = get_author_m page, 2, 1
+
+      forms
+    end
+
 
     def get_article_references( page )
       references = get_article_reference_m page, 0, 6

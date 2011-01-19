@@ -49,7 +49,7 @@ Hash arguments are:
 Returning value depends on :format option. If the option is :ruby it returns array of hashes with articles metadata else it is formated string.
 
 
-#Lookup#author_name_forms( hash )
+#Lookup#author( hash )
 
 Hash arguments are:
 

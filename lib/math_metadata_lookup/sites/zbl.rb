@@ -36,9 +36,10 @@ module MathMetadata
     ARTICLE_ISSN_RE = %r{ISSN\s*(.........)}mi
     ARTICLE_KEYWORDS_RE = %r{<p><i>Keywords:</i>\s*(.*?)\s*</p>}mi
     ARTICLE_KEYWORD_RE = %r{([^;]+) ?}mi
-    ARTICLE_REFERENCES_RE = %r{xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+    ARTICLE_REFERENCES_RE = %r{<p><i>Citations:</i>\s*(.*?)\s*</p>}
     # 1=authors, 2=journal, 3=volume/issue, 4=year, 5=range, 6=ref
-    ARTICLE_REFERENCE_RE = %r{xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+    ARTICLE_REFERENCE_RE = %r{xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+#<p><i>Citations:</i> <a href="?an=0962.76001">Zbl 0962.76001</a>; <a href="?an=0784.46029">Zbl 0784.46029</a>; <a href="?an=0974.46040">Zbl 0974.46040</a></p>
 
     protected
 
@@ -47,7 +48,13 @@ module MathMetadata
     end
 
     def get_article_references( page )
+      page =~ self.class::ARTICLE_REFERENCES_RE
+      ids = $1.to_s.gsub(/<.*?>/,'').gsub(/zbl /i,'').strip.split('; ')
       references = []
+      ids.each do |id|
+        references << article(:id => id, :format => :ruby, :references => false).first
+      end
+      references
     end
 
   end # ZBL

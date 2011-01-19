@@ -43,7 +43,7 @@ module MathMetadata
 
     # search for articles
     def article( args={} )
-      opts = {:id => nil, :title => "", :year => "", :authors => [], :format => :ruby}.merge(args)
+      opts = {:id => nil, :title => "", :year => "", :authors => [], :references => true, :format => :ruby}.merge(args)
 
       page = fetch_article(opts)
       articles = []
@@ -51,9 +51,9 @@ module MathMetadata
       return metadata unless page
 
       if list_of_articles?(page)
-        articles = get_article_list page
+        articles = get_article_list(page, opts)
       else
-        articles << get_article(page)
+        articles << get_article(page, opts)
       end
   
       return nil if articles.size == 0
@@ -191,7 +191,7 @@ module MathMetadata
     end
 
     
-    def get_article( page )
+    def get_article( page, opts={} )
       metadata = {}
       metadata[:id] = get_article_id page
       metadata[:title], metadata[:language] = get_article_title page, 2
@@ -202,7 +202,7 @@ module MathMetadata
       metadata[:year] = get_article_year page
       metadata[:keywords] = get_article_keyword_s page
       metadata[:issn] = get_article_issn_s page
-      metadata[:references] = get_article_references page
+      metadata[:references] = get_article_references(page) if opts[:references]
       metadata
     end
 

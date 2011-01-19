@@ -1,7 +1,6 @@
 Tasks
 =====
 
-o support for references
 o xml output
 o heuristic
   o joining results
@@ -12,3 +11,4 @@ Completed
 =========
 
 * year argument
+* support for references

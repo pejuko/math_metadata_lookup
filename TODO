@@ -1,6 +1,14 @@
-* support for references
+Tasks
+=====
+
+o support for references
+o xml output
+o heuristic
+  o joining results
+  o guess relevant article if possible
+
+
+Completed
+=========
+
 * year argument
-* xml output
-* heuristic
-  * joining results
-  * guess relevant article if possible

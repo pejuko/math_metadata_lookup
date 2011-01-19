@@ -19,7 +19,7 @@ module MathMetadata
 
 
     ARTICLE_ID_URL = "http://www.ams.org/msnmain?preferred_language=en&pg3=MR&s3=%s&l=20&reference_lists=show&simple_headlines=full&contributed_items=show&redirect=Providence%%2C+RI+USA&Submit=Start+Search&fn=130&form=basicsearch"
-    ARTICLE_URL = "http://www.ams.org/mathscinet/search/publications.html?pg4=TI&s4=%s&co5=AND&%s&Submit=Search&dr=all&yrop=eq&arg3=&yearRangeFirst=&yearRangeSecond=&pg8=ET&s8=All&review_format=html"
+    ARTICLE_URL = "http://www.ams.org/mathscinet/search/publications.html?pg4=TI&s4=%s&co4=AND&%s&Submit=Search&dr=all&yrop=eq&arg3=&yearRangeFirst=&yearRangeSecond=&pg8=ET&s8=All&review_format=html"
 
     LIST_OF_ARTICLES_RE = %r{<strong>Matches:</strong>\s*\d*}mi
     ARTICLE_ENTRY_RE = %r{<div class="headlineText">\s*<a href="/mathscinet/search/publdoc.html[^"]+">\s*<strong>\s*([^< ]+)\s*</strong>\s*<strong>}mi

@@ -46,14 +46,17 @@ Other: #{form}~
         result += %~Id: #{metadata[:id]}
 Publication: #{metadata[:publication]}
 Title: #{metadata[:title]}
-Authors: #{metadata[:authors].join("; ")}
+Authors: #{[metadata[:authors]].flatten.join("; ")}
 Year: #{metadata[:year]}
 Language: #{metadata[:language]}
 MSC: #{metadata[:msc].join("; ")}
 Pages: #{metadata[:range]}
 ISSN: #{metadata[:issn].join('; ')}
-Keywords: #{metadata[:keywords].join('; ')}
-~
+Keywords: #{metadata[:keywords].join('; ')}~
+        metadata[:references].to_a.each_with_index do |ref, idx|
+          result += %~
+Ref.: #{idx+1}. #{ref[:authors].join("; ")}: #{ref[:title]}~
+        end
       when :html
         result += %~
     <div class="article">
@@ -67,6 +70,24 @@ Keywords: #{metadata[:keywords].join('; ')}
         Pages: <span class="pages">#{::CGI.escapeHTML metadata[:range].to_s}</span><br />
         ISSN: <span class="issn">#{::CGI.escapeHTML metadata[:issn].to_a.join('; ')}</span><br />
         Keywords: <span class="keywords">#{::CGI.escapeHTML metadata[:keywords].to_a.join('; ')}</span><br />
+        References:
+        <div id="ref#{metadata[:id]}" class="references">
+~
+        metadata[:references].to_a.each_with_index do |ref, idx|
+          result += %~
+            <div class="reference">
+                Number: #{ref[:number] || idx+1}
+                Authors: #{[ref[:authors]].flatten.join("; ")}
+                Title: #{ref[:title]}
+                Publication: #{ref[:publication]}
+                Publisher: #{ref[:publisher]}
+                Year: #{ref[:year]}
+                Id: #{ref[:id]}
+            </div>
+~
+        end
+        result += %~
+        </div>
     </div>
 ~
       end

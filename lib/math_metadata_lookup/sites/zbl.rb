@@ -18,7 +18,7 @@ module MathMetadata
     
     
     ARTICLE_ID_URL = "http://www.zentralblatt-math.org/zmath/en/search?q=an:%s"
-    ARTICLE_URL = "http://www.zentralblatt-math.org/zmath/en/search?q=ti:%s%%26%s"
+    ARTICLE_URL = "http://www.zentralblatt-math.org/zmath/en/search?q=ti:%s%%26%s%%26py:%s"
     
     LIST_OF_ARTICLES_RE = %r{<strong class="middle">Result:</strong>}mi
     ARTICLE_ENTRY_RE = %r{<span[^>]*?>\s*<a href="\?q=an:([^\&]+)\&format=complete">[^<]+</a>\s*<b>}mi

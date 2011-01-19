@@ -31,6 +31,7 @@ require 'getoptlong'
 opts = GetoptLong.new(
   ["--title", "-t", GetoptLong::REQUIRED_ARGUMENT],
   ["--author", "-a", GetoptLong::REQUIRED_ARGUMENT],
+  ["--year", "-y", GetoptLong::REQUIRED_ARGUMENT],
   ["--id", "-i", GetoptLong::REQUIRED_ARGUMENT],
   ["--site", "-s", GetoptLong::REQUIRED_ARGUMENT],
   ["--verbose", "-v", GetoptLong::NO_ARGUMENT],
@@ -41,7 +42,7 @@ $options = {:sites => [], :authors => [], :format => :text, :verbose => false}
 opts.each do |opt, val|
   optkey = opt[2..-1].to_sym
   case optkey
-  when :title, :id
+  when :title, :id, :year
     $options[optkey] = val.strip
   when :site, :author
     $options["#{optkey}s".to_sym] << val.strip

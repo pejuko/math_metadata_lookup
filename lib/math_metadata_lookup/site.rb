@@ -43,7 +43,7 @@ module MathMetadata
 
     # search for articles
     def article( args={} )
-      opts = {:id => nil, :title => "", :authors => [], :format => :ruby}.merge(args)
+      opts = {:id => nil, :title => "", :year => "", :authors => [], :format => :ruby}.merge(args)
 
       page = fetch_article(opts)
       articles = []
@@ -209,14 +209,14 @@ module MathMetadata
     end
   
     def fetch_article( args={} )
-      opts = {:id => nil, :title => "", :authors => []}.merge(args)
+      opts = {:id => nil, :title => "", :year => "", :authors => []}.merge(args)
       url = self.class::ARTICLE_ID_URL % opts[:id].to_s.strip
       if opts[:id].to_s.strip.empty?
         author = join_article_authors opts[:authors]
         title = opts[:title]
         title = '' if not title.kind_of?(String)
         title = nwords(title) if @options[:nwords]
-        url = self.class::ARTICLE_URL % [URI.escape(title), author]
+        url = self.class::ARTICLE_URL % [URI.escape(title), author, opts[:year].to_s]
       end
   
       fetch_page(url)

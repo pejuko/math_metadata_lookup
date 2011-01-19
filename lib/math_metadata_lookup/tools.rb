@@ -44,7 +44,7 @@ Other: #{form}~
       case format
       when :text
         result += %~Id: #{metadata[:id]}
-Journal/Proceeding: #{metadata[:proceeding]}
+Publication: #{metadata[:publication]}
 Title: #{metadata[:title]}
 Authors: #{metadata[:authors].join("; ")}
 Year: #{metadata[:year]}
@@ -58,7 +58,7 @@ Keywords: #{metadata[:keywords].join('; ')}
         result += %~
     <div class="article">
         Id: <span class="journal">#{::CGI.escapeHTML metadata[:id].to_s}</span><br />
-        Journal/Proceeding: <span class="journal">#{::CGI.escapeHTML metadata[:proceeding].to_s}</span><br />
+        Publication: <span class="journal">#{::CGI.escapeHTML metadata[:publication].to_s}</span><br />
         Title: <span class="title">#{::CGI.escapeHTML metadata[:title].to_s}</span><br />
         Authors: <span class="authors">#{::CGI.escapeHTML metadata[:authors].to_a.join("; ")}</span><br />
         Year: <span class="year">#{::CGI.escapeHTML metadata[:year].to_s}</span><br />

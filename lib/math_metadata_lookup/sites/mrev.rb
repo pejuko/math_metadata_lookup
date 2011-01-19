@@ -31,7 +31,7 @@ module MathMetadata
     ARTICLE_AUTHOR_RE = %r{<a href="/mathscinet/search/publications.html[^"]*">(.*?)</a>}mi
     ARTICLE_MSCS_RE = %r{<a href="/mathscinet/search/mscdoc.html\?code=[^"]*">(.*?)</a>}mi
     ARTICLE_MSC_RE = %r{([^, ]+)}mi
-    ARTICLE_PROCEEDING_RE = %r{<a href="/mathscinet/search/journaldoc\.html\?cn=[^"]*">\s*<em>(.*?)</em>\s*</a>}mi
+    ARTICLE_PUBLICATION_RE = %r{<a href="/mathscinet/search/journaldoc\.html\?cn=[^"]*">\s*<em>(.*?)</em>\s*</a>}mi
     ARTICLE_RANGE_RE = %r{(\d+–\d+)}mi
     ARTICLE_YEAR_RE = %r{<a href="/mathscinet/search/publications\.html[^"]*">\s*\(?(\d{4})\)?, </a>}mi
     ARTICLE_ISSNS_RE = %r{(ISSN.*?)<br>}mi
@@ -40,8 +40,25 @@ module MathMetadata
     ARTICLE_KEYWORD_RE = %r{([^;]) ?}mi
     #ARTICLE_REFERENCES_RE = %r{<center>\s*<strong>\s*References\s*</strong>\s*</center>\s*<ol>\s*(.*?)\s*</ol>}mi
     ARTICLE_REFERENCES_RE = %r{<li>\s*([^:]+:.*?)\s*</li>}
-    # 1=authors, 2=journal, 3=volume/issue, 4=year, 5=range, 6=ref
-    ARTICLE_REFERENCE_RE = %r{([^:]+):(.*?)\s*<span class="bf">\s*(.*?)\s*<\/span>\s*\((\d+)\)\s*(?:,\s*([^ ]+?)\s*<a href="[^"]+"\s*>\s*([^ ]+)\s*.*?)?}mi
+    #ARTICLE_REFERENCE_RE = %r{([^:]+):(.*?)\s*<span class="bf">\s*(.*?)\s*<\/span>\s*\((\d+)\)\s*(?:,\s*([^ ]+?)\s*<a href="[^"]+"\s*>\s*([^ ]+)\s*.*?)?}mi
+    # 1=authors, 2=title, 3=publication, 4=year, 5=range, 6=ref
+    ARTICLE_REFERENCE_1_RE = %r{([^:]+):\s*(.*?),\s*([^,]+),\s*\((\d{4})\)\s*,\s*([^ ]+)\s*([^ ]+)\s*.*?}mi
+    # 1=authors, 2=title, 3=range, 4=publication, 5=place, 6=year
+    ARTICLE_REFERENCE_2_RE = %r{([^:]+):\s*(.*?),\s*pp\.\s*([^,]+?),\s*([^,]+),\s*(.*?),\s*(\d{4})}mi
+    # 1=authors, 2=title, 3=publication, 4=publisher, 5=place, 6=year, 7=id
+    ARTICLE_REFERENCE_3_RE = %r{([^:]+):\s*(.*?),\s*(.*?),\s*([^,]+),\s*([^,]+),\s*(\d{4})\s*([^ ]+)\s*.*?}mi
+    # 1=authors, 2=title, 3=publisher, 4=place, 5=year, 6=id
+    ARTICLE_REFERENCE_4_RE = %r{([^:]+):\s*(.*?),\s*([^,]+),\s*([^,]+),\s*(\d{4})\s*([^ ]+)\s*.*?}mi
+
+    # 1=authors, 2=title, 3=publication, 4=year, 5=range, 6=id
+    ARTICLE_REFERENCE_5_RE = %r{([^:]+):\s*(.*),\s*(.*?,\s*\d+)\s*\((\d{4})\),\s*([^ ]+)\s*([^ ]+).*?}mi
+
+    # 1=authors, 2=title, 3=publication, 4=year, 5=range, 6=id
+    ARTICLE_REFERENCE_6_RE = %r{([^:]+):\s*(.*),\s*(.*?)\s*\((\d{4})\),\s*([^ ]+)\s*([^ ]+).*?}mi
+    # 1=authors, 2=title, 3=publisher, 4=place
+    ARTICLE_REFERENCE_7_RE = %r{([^:]+):\s*(.*?),\s*([^,]+),\s*(.*)}mi
+    # 1=authors, 2=title, 3=publication, 4=id
+    ARTICLE_REFERENCE_8_RE = %r{([^:]+):\s*(.*?),\s*(.*?)\s*(MR[^ ]+).*?}mi
 
     def join_article_authors( authors )
       i = 4

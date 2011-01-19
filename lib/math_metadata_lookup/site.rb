@@ -125,13 +125,20 @@ module MathMetadata
       references
     end
 
+
+    def get_article_msc( page )
+      mscs = get_article_msc_s page
+      mscs = mscs.map{|m| m.split(/,|;/) }.flatten.map{|m| m =~ /\s*\(?([^\s\)\(]+)\)?\s*/; $1}
+      mscs
+    end
+
     
     def get_article( page )
       metadata = {}
       metadata[:id] = get_article_id page
       metadata[:title], metadata[:language] = get_article_title page, 2
       metadata[:authors] = get_article_author_s page
-      metadata[:msc] = get_article_msc_s page
+      metadata[:msc] = get_article_msc page
       metadata[:proceeding] = get_article_proceeding page
       metadata[:range] = get_article_range page
       metadata[:year] = get_article_year page

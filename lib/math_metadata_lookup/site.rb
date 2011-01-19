@@ -131,7 +131,7 @@ module MathMetadata
 
         # 1=authors, 2=title, 3=publication, 4=year, 5=range, 6=id, 7=place, 8=publisher
         found = []
-        (1..8).each do |j|
+        (1..10).each do |j|
           re = eval("self.class::ARTICLE_REFERENCE_#{j}_RE")
           if entry[:string] =~ re
             case j
@@ -139,27 +139,32 @@ module MathMetadata
               # 1=authors, 2=title, 3=publication, 4=year, 5=range, 6=id
               found = [$1, $2, $3, $4, $5, $6]
             when 2
+              # 1=authors, 2=title, 3=publication, 4=range, 5=publisher, 6=place, 7=year, 8=id
+              found = [$1, $2, $3, $7, $4, $8, $6, $5]
+            when 3
               # 1=authors, 2=title, 3=range, 4=publication, 5=place, 6=year
               found = [$1, $2, $4, $6, $3, nil, $5]
-            when 3
-              # 1=authors, 2=title, 3=publication, 4=publisher, 5=place, 6=year, 7=id
-              found = [$1, $2, $3, $6, nil, $7, $5, $4]
+
             when 4
               # 1=authors, 2=title, 3=publisher, 4=place, 5=year, 6=id
               found = [$1, $2, nil, $5, nil, $6, $4, $3]
 
             when 5
-              # 1=authors, 2=title, 3=publication, 4=year, 5=range, 6=id
-              found = [$1, $2, $3, $4, $5, $6]
-
-
+              # 1=authors, 2=title, 3=publication, 4=publisher, 5=place, 6=year, 7=id
+              found = [$1, $2, $3, $6, nil, $7, $5, $4]
             when 6
+              # 1=authors, 2=title, 3=publisher, 4=place, 5=year, 6=id
+              found = [$1, $2, nil, $5, nil, $6, $4, $3]
+            when 7
               # 1=authors, 2=title, 3=publication, 4=year, 5=range, 6=id
               found = [$1, $2, $3, $4, $5, $6]
-            when 7
+            when 8
+              # 1=authors, 2=title, 3=publication, 4=year, 5=range, 6=id
+              found = [$1, $2, $3, $4, $5, $6]
+            when 9
               # 1=authors, 2=title, 3=publisher, 4=place
               found = [$1, $2, nil, nil, nil, nil, $4, $3]
-            when 8
+            when 10
               # 1=authors, 2=title, 3=publication, 4=id
               found = [$1, $2, $3, nil, nil, $4, nil, nil]
             end

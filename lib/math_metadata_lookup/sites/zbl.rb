@@ -46,6 +46,10 @@ module MathMetadata
       authors.collect { |author| "au:#{URI.escape author}" }.join("%26")
     end
 
+    def get_article_references( page )
+      references = []
+    end
+
   end # ZBL
 
 end

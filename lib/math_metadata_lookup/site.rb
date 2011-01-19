@@ -66,7 +66,7 @@ module MathMetadata
     def method_missing(meth, *args)
       page = args.first
 
-      case meth
+      case meth.to_s
       when /^list_of_(.*)\?$/
         re = eval("self.class::LIST_OF_#{$1.upcase}_RE")
         return page =~ re

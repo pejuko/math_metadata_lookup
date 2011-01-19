@@ -34,7 +34,7 @@ opts = GetoptLong.new(
   ["--id", "-i", GetoptLong::REQUIRED_ARGUMENT],
   ["--site", "-s", GetoptLong::REQUIRED_ARGUMENT],
   ["--verbose", "-v", GetoptLong::NO_ARGUMENT],
-  ["--format", "-f", GetoptLong::REQUIRED_ARGUMENT],
+  ["--format", "-f", GetoptLong::REQUIRED_ARGUMENT]
 )
 
 $options = {:sites => [], :authors => [], :format => :text, :verbose => false}

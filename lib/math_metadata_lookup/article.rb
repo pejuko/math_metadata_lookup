@@ -36,8 +36,8 @@ Ref.: #{idx+1}. #{[ref[:authors]].flatten.join("; ")}: #{ref[:title]}~
         Pages: <span class="pages">#{::CGI.escapeHTML @metadata[:range].to_s}</span><br />
         ISSN: <span class="issn">#{::CGI.escapeHTML @metadata[:issn].to_a.join('; ')}</span><br />
         Keywords: <span class="keywords">#{::CGI.escapeHTML @metadata[:keywords].to_a.join('; ')}</span><br />
-        References:
-        <div id="ref#{@metadata[:id]}" class="references">
+        <a href="javascript:toggle_references('ref#{@metadata[:id]}')">References >>></a>
+        <div id="ref#{@metadata[:id]}" name="ref#{@metadata[:id]}"class="references">
 ~
       @metadata[:references].to_a.each_with_index do |ref, idx|
         result += %~

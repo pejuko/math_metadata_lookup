@@ -31,6 +31,14 @@ Usage from ruby
     p article[:authors] if article
 
 
+Resources
+---------
+
+Content of the resource directory:
+
+* **``math_metadata_lookup.js``**: contains function ``toggle_references( id )``. It can toggle visibility of references in html document. By default are all references visible. If you set in css class references attribute display to none it will be hidden by default.
+
+
 Function reference
 ------------------
 

@@ -53,6 +53,11 @@ opts.each do |opt, val|
   end
 end
 
+unless MathMetadata::Result::FORMATS.include?($options[:format].to_sym)
+  print_help
+  exit 1
+end
+
 pp $options if $options[:verbose]
 
 sites = $options[:sites].size == 0 ? :all : $options[:sites].map{|s| s.to_sym}
@@ -67,37 +72,12 @@ when 'author'
   l.author :name => $options[:authors].first, :format => args[:format]
 else
   print_help
+  exit 1
 end
 
-case $options[:format]
+case $options[:format].to_sym
 when :ruby
   pp result
-when :yaml
-  puts result.to_yaml
-when :html
-  result.each do |site|
-    puts %~
-<div class="site">
-    <h3>Site: #{site[:name]}</h3>
-    #{site[:result]}
-</div>~
-  end
-when :xml
-  puts %~<?xml version="1.0" encoding="utf-8"?>
-<mml>~
-  result.each do |site|
-    puts %~
-    <site name="#{site[:name]}">
-        #{site[:result]}
-    </site>
-~
-  end
-  puts %~</mml>~
-else
-  result.each do |site|
-    next unless site[:result]
-    puts "Site: #{site[:name]}\n\n"
-    puts site[:result]
-    puts ""
-  end
+when :yaml, :html, :xml, :text
+  puts result.format($options[:format])
 end

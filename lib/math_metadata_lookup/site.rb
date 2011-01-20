@@ -26,7 +26,7 @@ module MathMetadata
 
     # search for authors
     def author( args={} )
-      opts = {:name => nil, :format => :ruby}.merge(args)
+      opts = {:name => nil}.merge(args)
       anf = author_name_forms opts[:name]
 
       authors = []
@@ -35,15 +35,13 @@ module MathMetadata
         authors << entry unless entry[:id].to_s.strip.empty?
       end
 
-      return authors if opts[:format] == :ruby
-
-      authors.map{|a| a.format(opts[:format])}.join
+      authors
     end
 
 
     # search for articles
     def article( args={} )
-      opts = {:id => nil, :title => "", :year => "", :authors => [], :references => true, :format => :ruby}.merge(args)
+      opts = {:id => nil, :title => "", :year => "", :authors => [], :references => true}.merge(args)
 
       page = fetch_article(opts)
       articles = []
@@ -57,9 +55,7 @@ module MathMetadata
       end
   
       return nil if articles.size == 0
-      return articles if opts[:format] == :ruby
-
-      articles.map{|a| a.format(opts[:format])}.join
+      articles
     end
 
 

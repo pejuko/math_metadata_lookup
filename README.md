@@ -51,10 +51,8 @@ Hash arguments are:
 * article id is unknown 
   * **:title** String
   * **:authors** Array of strings
-* both cases
-  * **:format** Default is :ruby. One of [:ruby, :text, :html]
 
-Returning value depends on :format option. If the option is :ruby it returns array of hashes with articles metadata else it is formated string.
+Returns instance of class Result.
 
 
 #Lookup#author( hash )
@@ -62,6 +60,5 @@ Returning value depends on :format option. If the option is :ruby it returns arr
 Hash arguments are:
 
 * **:name** String. Author name.
-* **:format** The same as i previous function.
 
-Returning value depends on :format option. If the option is :ruby it returns array of authors. Author is hash with three elements. It contains :id, :preferred and :forms. :id is id on the site, :preferred is the preferred form of name and :forms is array containing all others forms.
+Returns instance of class Result.

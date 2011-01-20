@@ -32,7 +32,7 @@ module MathMetadata
         result << entry
       end
 
-      result
+      Result.new(result)
     end
   end # Lookup
 

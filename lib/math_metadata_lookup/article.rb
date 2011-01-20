@@ -58,7 +58,7 @@ Ref.: #{idx+1}. #{[ref[:authors]].flatten.join("; ")}: #{ref[:title]}~
                     <authors>~
         [ref[:authors]].flatten.each do |author|
           result += %~
-                        <author>#{::CGI.escapeHTML ref[:author].to_s}</author>~
+                        <author>#{::CGI.escapeHTML author}</author>~
         end
         result += %~
                     </authors>

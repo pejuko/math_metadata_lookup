@@ -4,6 +4,9 @@
 dir = File.expand_path(File.dirname(__FILE__))
 $:.unshift(dir) unless $:.include?(dir)
 
+# result class
+require 'math_metadata_lookup/result'
+
 # entities
 require 'math_metadata_lookup/entity'
 require 'math_metadata_lookup/article'

@@ -52,7 +52,7 @@ module MathMetadata
       ids = $1.to_s.gsub(/<.*?>/,'').gsub(/zbl /i,'').strip.split('; ')
       references = []
       ids.each do |id|
-        references << article(:id => id, :format => :ruby, :references => false).first
+        references << article(:id => id, :references => false).first
       end
       references
     end

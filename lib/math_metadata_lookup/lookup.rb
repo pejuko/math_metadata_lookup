@@ -34,6 +34,36 @@ module MathMetadata
 
       Result.new(result)
     end
+
+
+    # try to decide what is best result for query and combine results from all sites to one article response
+    def heuristic( args={} )
+      result = Result.new
+      
+      rs = {:name => "Heuristic Merge", :url => "", :results => []}
+
+      sites = article(args)
+
+      # joining articles
+      articles = []
+      query_article = Article.new( {:title => args[:title].to_s, :authors => args[:authors], :year => args[:year]} )
+      sites.each do |site|
+        site[:result].each do |article|
+          next if article[:title].to_s.empty?
+          next unless query_article == article
+          article[:site] = site[:name]
+          article[:distance] = query_article.distance(article)
+          articles << article
+        end
+      end
+
+      rs[:result] = articles.sort{|a| a[:distance]}
+
+      result << rs
+      result 
+    end
+
+
   end # Lookup
 
 end # module

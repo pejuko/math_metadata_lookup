@@ -8,7 +8,7 @@ $:.unshift File.expand_path(File.join(File.dirname(__FILE__), "../lib"))
 
 def print_help
   puts ""
-  puts "#{$0} <article|author> -t <title> -a <author> -i <id> -s <mrev|zbl> -f <text|html|xml|ruby|yaml>"
+  puts "#{$0} <article|author|heuristic> -t <title> -a <author> -i <id> -s <mrev|zbl> -f <text|html|xml|ruby|yaml>"
   puts ""
   puts "Examples:"
   puts %~#{$0} article -t "Sobolev embeddings with variable exponent. II"~
@@ -70,6 +70,8 @@ when 'article'
   l.article args
 when 'author'
   l.author :name => $options[:authors].first, :format => args[:format]
+when 'heuristic'
+  l.heuristic args
 else
   print_help
   exit 1

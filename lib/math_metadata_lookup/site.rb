@@ -225,7 +225,7 @@ module MathMetadata
     def nwords(s)
       s.split(" ")[0...@options[:nwords].to_i].join(" ")
     end
-  
+
   
     def fetch_page( url )
   

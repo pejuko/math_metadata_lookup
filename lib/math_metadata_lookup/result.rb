@@ -13,6 +13,11 @@ module MathMetadata
     end
 
 
+    def <<(val)
+      @metadata << val
+    end
+
+
     def each
       @metadata.each do |site|
         yield site

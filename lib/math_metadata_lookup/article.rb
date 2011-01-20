@@ -2,6 +2,24 @@ module MathMetadata
 
   class Article < Entity
 
+    def ==(article)
+      distance(article) > 0.5
+    end
+
+
+    def distance(article)
+      td = MathMetadata.levenshtein_distance @metadata[:title].to_s, article[:title].to_s
+      ad = MathMetadata.levenshtein_distance [@metadata[:authors]].flatten.sort.join(";"), [article[:authors]].flatten.sort.join(";")
+      yd = MathMetadata.levenshtein_distance @metadata[:year].to_s, article[:year].to_s
+
+      d = (2.2*td + 1.7*ad + 1.0*yd) / 4.9
+      #p [td, ad, yd]
+      #p d
+
+      d
+    end
+
+
     def to_text
       result = ""
       result += %~Id: #{@metadata[:id]}

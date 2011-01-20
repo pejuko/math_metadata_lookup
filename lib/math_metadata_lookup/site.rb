@@ -198,6 +198,7 @@ module MathMetadata
       } )
 
       a.title, a.language = get_article_title(page, 2)
+      a.title.gsub!(/<\/span>/,'')
       a.references = get_article_references(page) if opts[:references]
 
       a

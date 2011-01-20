@@ -4,8 +4,10 @@
 dir = File.expand_path(File.dirname(__FILE__))
 $:.unshift(dir) unless $:.include?(dir)
 
-# toolset
-require 'math_metadata_lookup/tools'
+# entities
+require 'math_metadata_lookup/entity'
+require 'math_metadata_lookup/article'
+require 'math_metadata_lookup/author'
 
 # abstract class for sites
 require 'math_metadata_lookup/site'

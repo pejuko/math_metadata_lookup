@@ -85,7 +85,7 @@ when :html
 else
   result.each do |site|
     next unless site[:result]
-    puts "Site: #{site[:name]}"
+    puts "Site: #{site[:name]}\n\n"
     puts site[:result]
     puts ""
   end

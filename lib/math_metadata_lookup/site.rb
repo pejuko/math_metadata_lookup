@@ -31,13 +31,13 @@ module MathMetadata
 
       authors = []
       anf.each do |af|
-        entry = {:id => af[1], :preferred => af[0], :forms => af[2]}
+        entry = Author.new({:id => af[1], :preferred => af[0], :forms => af[2]})
         authors << entry unless entry[:id].to_s.strip.empty?
       end
 
       return authors if opts[:format] == :ruby
 
-      authors.map{|a| MathMetadata.format_author(a, opts[:format])}.join
+      authors.map{|a| a.format(opts[:format])}.join
     end
 
 
@@ -51,7 +51,7 @@ module MathMetadata
       return metadata unless page
 
       if list_of_articles?(page)
-        articles = get_article_list(page, opts)
+        articles = get_article_list(page)
       else
         articles << get_article(page, opts)
       end
@@ -59,7 +59,7 @@ module MathMetadata
       return nil if articles.size == 0
       return articles if opts[:format] == :ruby
 
-      articles.map{|a| MathMetadata.format_article a, opts[:format]}.join
+      articles.map{|a| a.format(opts[:format])}.join
     end
 
 
@@ -190,18 +190,21 @@ module MathMetadata
 
     
     def get_article( page, opts={} )
-      metadata = {}
-      metadata[:id] = get_article_id page
-      metadata[:title], metadata[:language] = get_article_title page, 2
-      metadata[:authors] = get_article_author_s page
-      metadata[:msc] = get_article_msc page
-      metadata[:publication] = get_article_publication page
-      metadata[:range] = get_article_range page
-      metadata[:year] = get_article_year page
-      metadata[:keywords] = get_article_keyword_s page
-      metadata[:issn] = get_article_issn_s page
-      metadata[:references] = get_article_references(page) if opts[:references]
-      metadata
+      a = Article.new( {
+        :id => get_article_id(page),
+        :authors => get_article_author_s(page),
+        :msc => get_article_msc(page),
+        :publication => get_article_publication(page),
+        :range => get_article_range(page),
+        :year => get_article_year(page),
+        :keywords => get_article_keyword_s(page),
+        :issn => get_article_issn_s(page)
+      } )
+
+      a.title, a.language = get_article_title(page, 2)
+      a.references = get_article_references(page) if opts[:references]
+
+      a
     end
 
 

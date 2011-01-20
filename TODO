@@ -1,7 +1,7 @@
 Tasks
 =====
 
-o xml output
+o cache
 o heuristic
   o joining results
   o guess relevant article if possible
@@ -12,3 +12,4 @@ Completed
 
 * year argument
 * support for references
+* xml output

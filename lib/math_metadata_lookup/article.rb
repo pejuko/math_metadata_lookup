@@ -23,11 +23,65 @@ Ref.: #{idx+1}. #{[ref[:authors]].flatten.join("; ")}: #{ref[:title]}~
     end
 
 
+    def to_xml
+      result = %~
+        <article id="#{::CGI.escapeHTML @metadata[:id].to_s}" year="#{::CGI.escapeHTML @metadata[:year].to_s}" lang="#{::CGI.escapeHTML @metadata[:language].to_s}">
+            <publication>#{::CGI.escapeHTML @metadata[:publication].to_s}</publication>
+            <title>#{::CGI.escapeHTML @metadata[:title].to_s}</title>
+            <authors>~
+      @metadata[:authors].to_a.each do |author|
+        result += %~
+                <author>#{::CGI.escapeHTML author}</author>~
+      end
+      result += %~
+            </authors>~
+      @metadata[:msc].to_a.each do |msc|
+        result += %~
+            <msc>#{::CGI.escapeHTML msc}</msc>~
+      end
+      result += %~
+            <pages>#{::CGI.escapeHTML @metadata[:range].to_s}</pages>~
+        @metadata[:issn].to_a.each do |issn|
+          result += %~
+            <issn>#{::CGI.escapeHTML issn}</issn>~
+        end
+        @metadata[:keywords].to_a.each do |keyword|
+          result += %~
+            <keyword>#{::CGI.escapeHTML keyword}</keyword>~
+        end
+        result += %~
+            <references>
+~
+      @metadata[:references].to_a.each_with_index do |ref, idx|
+        result += %~
+                <reference id="#{::CGI.escapeHTML ref[:id].to_s}" number="#{::CGI.escapeHTML(ref[:number].to_s || (idx+1).to_s)}">
+                    <authors>~
+        [ref[:authors]].flatten.each do |author|
+          result += %~
+                        <author>#{::CGI.escapeHTML ref[:author].to_s}</author>~
+        end
+        result += %~
+                    </authors>
+                    <title>#{::CGI.escapeHTML ref[:title].to_s}</title>
+                    <publication>#{::CGI.escapeHTML ref[:publication].to_s}</publication>
+                    <publisher>#{::CGI.escapeHTML ref[:publisher].to_s}</publisher>
+                    <year>#{::CGI.escapeHTML ref[:year].to_s}</year>
+                </reference>
+~
+      end
+      result += %~
+            </references>
+        </article>
+~
+      result
+    end
+
+
     def to_html
       result = %~
     <div class="article">
-        Id: <span class="journal">#{::CGI.escapeHTML @metadata[:id].to_s}</span><br />
-        Publication: <span class="journal">#{::CGI.escapeHTML @metadata[:publication].to_s}</span><br />
+        Id: <span class="id">#{::CGI.escapeHTML @metadata[:id].to_s}</span><br />
+        Publication: <span class="publication">#{::CGI.escapeHTML @metadata[:publication].to_s}</span><br />
         Title: <span class="title">#{::CGI.escapeHTML @metadata[:title].to_s}</span><br />
         Authors: <span class="authors">#{::CGI.escapeHTML @metadata[:authors].to_a.join("; ")}</span><br />
         Year: <span class="year">#{::CGI.escapeHTML @metadata[:year].to_s}</span><br />

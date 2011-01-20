@@ -27,7 +27,7 @@ module MathMetadata
       result = self
 
       case f.to_sym
-      when :text, :html
+      when :text, :html, :xml
         result = self.send("to_#{f}")
       end
 

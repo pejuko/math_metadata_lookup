@@ -12,6 +12,22 @@ Other: #{form}~
       result
     end
 
+
+    def to_xml
+      result = %~
+        <author id="#{::CGI.escapeHTML(@metadata[:id])}">
+            <name form="preferred">#{::CGI.escapeHTML(@metadata[:preferred])}</name>~
+      @metadata[:forms].each do |form|
+          result += %~
+            <name form="other">#{::CGI.escapeHTML(form)}</name>~
+      end
+      result += %~
+        </author>
+~
+      result
+    end
+
+
     def to_html
       result = %~
     <div class="author">

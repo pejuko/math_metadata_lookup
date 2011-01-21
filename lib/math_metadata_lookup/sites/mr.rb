@@ -26,7 +26,7 @@ module MathMetadata
     ARTICLE_ENTRY_RE = %r{<div class="headlineText">\s*<a href="/mathscinet/search/publdoc.html[^"]+">\s*<strong>\s*([^< ]+)\s*</strong>\s*<strong>}mi
 
     ARTICLE_ID_RE = %r{<strong>(.*?)</strong>}mi
-    ARTICLE_TITLE_RE = %r{<span class="title">(?:<span class="searchHighlight">)?(.*)</span>\s*<span class="sumlang">\(?(.*?)\)?</span>}mi
+    ARTICLE_TITLE_RE = %r{<span class="title">(?:<span class="searchHighlight">)?(.*?)</span>\s*(?:<span class="sumlang">\(?(.*?)\)?</span>)?}mi
     ARTICLE_AUTHORS_RE = %r{<br />(<a href="/mathscinet/search/publications.html[^"]*">.*?</a>)<br />}mi
     ARTICLE_AUTHOR_RE = %r{<a href="/mathscinet/search/publications.html[^"]*">(.*?)</a>}mi
     ARTICLE_MSCS_RE = %r{<a href="/mathscinet/search/mscdoc.html\?code=[^"]*">(.*?)</a>}mi
@@ -48,7 +48,7 @@ module MathMetadata
       i = 4
       authors.collect { |author| 
         i += 1
-        "pg#{i}=AUCN&s#{i}=#{URI.escape author}&co#{i}=AND"
+        "pg#{i}=AUCN&s#{i}=#{URI.escape normalize_name(author)}&co#{i}=AND"
       }.join("&")
     end
 

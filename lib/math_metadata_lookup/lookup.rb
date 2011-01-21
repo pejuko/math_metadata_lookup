@@ -43,7 +43,8 @@ module MathMetadata
       
       # use only authors surnames
       args_dup = args.dup
-      args_dup[:authors].map!{|a| a =~ /([^,]+)/; $1}
+      args_dup[:authors].map!{|a| a =~ /([^,]+)/; $1 ? $1 : a}
+      args_dup[:authors].map!{|a| a =~ /([^ ]+) \S+/; $1 ? $1 : a}
       sites = article(args_dup)
 
       # query article has to contain full names

@@ -13,8 +13,8 @@ module MathMetadata
       yd = MathMetadata.levenshtein_distance @metadata[:year].to_s, article[:year].to_s
 
       m = []
-      m << [td, 2.2] unless @metadata[:title].to_s.empty?
-      m << [ad, 1.7] unless [@metadata[:authors]].flatten.join(";").empty?
+      m << [td, 2.8] unless @metadata[:title].to_s.empty?
+      m << [ad, 1.4] unless [@metadata[:authors]].flatten.join(";").empty?
       m << [yd, 1.0] unless @metadata[:year].to_s.empty?
 
       sum = m.inject(0.0){|s,x| s += x[1]}

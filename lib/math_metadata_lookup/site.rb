@@ -152,7 +152,7 @@ module MathMetadata
         :authors => get_article_author_s(page),
         :msc => get_article_msc(page),
         :publication => get_article_publication(page),
-        :range => get_article_range(page),
+        :range => normalize_range(get_article_range(page)),
         :year => get_article_year(page),
         :keywords => get_article_keyword_s(page),
         :issn => get_article_issn_s(page)
@@ -172,6 +172,11 @@ module MathMetadata
         articles << article(:id => match[0]).first
       end
       articles
+    end
+
+
+    def normalize_range( range )
+      range.to_s.gsub(/–|--/,'-')
     end
 
 

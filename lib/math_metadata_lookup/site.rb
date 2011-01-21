@@ -180,10 +180,14 @@ module MathMetadata
 
     def get_article_msc( page )
       mscs = get_article_msc_s page
-      mscs = mscs.map{|m| m.split(/,|;/) }.flatten.map{|m| m =~ /\s*\(?([^\s\)\(]+)\)?\s*/; $1}
+      mscs = normalize_mscs(mscs)
       mscs
     end
 
+
+    def normalize_mscs( mscs )
+      mscs.map{|m| m.split(/,|;/) }.flatten.map{|m| m =~ /\s*\(?([^\s\)\(]+)\)?\s*/; $1}
+    end
     
     def get_article( page, opts={} )
       a = Article.new( {
@@ -228,11 +232,12 @@ module MathMetadata
     end
 
   
-    def fetch_page( url )
+    def fetch_page( url, args={} )
+      opts = {:entities => true}.merge(args)
   
       puts "fetching #{url}" if @options[:verbose]
       page = URI.parse(url).read
-      page = HTMLEntities.decode_entities(page) if page
+      page = HTMLEntities.decode_entities(page) if page and opts[:entities]
     
       page
     end
@@ -252,7 +257,7 @@ module MathMetadata
   
     def fetch_article( args={} )
       opts = {:id => nil, :title => "", :year => "", :authors => []}.merge(args)
-      url = self.class::ARTICLE_ID_URL % opts[:id].to_s.strip
+      url = self.class::ARTICLE_ID_URL % URI.escape(opts[:id].to_s.strip)
       if opts[:id].to_s.strip.empty?
         author = join_article_authors opts[:authors]
         title = opts[:title]
@@ -261,7 +266,7 @@ module MathMetadata
         url = self.class::ARTICLE_URL % [URI.escape(title), author, opts[:year].to_s]
       end
   
-      fetch_page(url)
+      fetch_page(url, opts)
     end
 
   end # Site

@@ -51,7 +51,7 @@ module MathMetadata
         end
         site[:result].delete_if{|a| a[:similarity].to_f < opts[:threshold].to_f}
         if site[:result].size > 0
-          site[:result].sort!{|a| a[:similarity]}
+          site[:result].sort!{|a,b| a[:similarity]<=>b[:similarity]}
           site[:result].reverse!
           site[:result] = [site[:result].first]
         end

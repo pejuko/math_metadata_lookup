@@ -12,7 +12,14 @@ module MathMetadata
       ad = MathMetadata.levenshtein_distance [@metadata[:authors]].flatten.sort.join(";"), [article[:authors]].flatten.sort.join(";")
       yd = MathMetadata.levenshtein_distance @metadata[:year].to_s, article[:year].to_s
 
-      d = (2.2*td + 1.7*ad + 1.0*yd) / 4.9
+      m = []
+      m << [td, 2.2] unless @metadata[:title].to_s.empty?
+      m << [ad, 1.7] unless [@metadata[:authors]].flatten.join(";").empty?
+      m << [yd, 1.0] unless @metadata[:year].to_s.empty?
+
+      sum = m.inject(0.0){|s,x| s += x[1]}
+
+      d = m.inject(0.0){|s,x| s+= x[0]*x[1]} / sum
       #p [td, ad, yd]
       #p d
 
@@ -53,12 +60,14 @@ Ref.: #{idx+1}. #{[ref[:authors]].flatten.join("; ")}: #{ref[:title]}~
                 <author>#{::CGI.escapeHTML author}</author>~
       end
       result += %~
-            </authors>~
+            </authors>
+            <msc>~
       @metadata[:msc].to_a.each do |msc|
         result += %~
-            <msc>#{::CGI.escapeHTML msc}</msc>~
+                <class>#{::CGI.escapeHTML msc}</class>~
       end
       result += %~
+            </msc>
             <pages>#{::CGI.escapeHTML @metadata[:range].to_s}</pages>~
         @metadata[:issn].to_a.each do |issn|
           result += %~

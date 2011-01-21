@@ -1,6 +1,8 @@
 # -*-: coding: utf-8 -*-
 # vi: fenc=utf-8:expandtab:ts=2:sw=2:sts=2
 
+require 'rexml/document'
+
 module MathMetadata
 
   # Zentralblatt
@@ -17,8 +19,8 @@ module MathMetadata
     AUTHOR_RE = %r{(.*?)\s*\[\d+\](?:;\s*)?}
     
     
-    ARTICLE_ID_URL = "http://www.zentralblatt-math.org/zmath/en/search?q=an:%s"
-    ARTICLE_URL = "http://www.zentralblatt-math.org/zmath/en/search?q=ti:%s%%26%s%%26py:%s"
+    ARTICLE_ID_URL = "http://www.zentralblatt-math.org/zmath/en/search?q=an:%s&type=xml&format=complete"
+    ARTICLE_URL = "http://www.zentralblatt-math.org/zmath/en/search?q=ti:%s%%26%s%%26py:%s&type=xml&format=complete"
     
     LIST_OF_ARTICLES_RE = %r{<strong class="middle">Result:</strong>}mi
     ARTICLE_ENTRY_RE = %r{<span[^>]*?>\s*<a href="\?q=an:([^\&]+)\&format=complete">[^<]+</a>\s*<b>}mi
@@ -41,21 +43,54 @@ module MathMetadata
     ARTICLE_REFERENCE_RE = %r{xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
 #<p><i>Citations:</i> <a href="?an=0962.76001">Zbl 0962.76001</a>; <a href="?an=0784.46029">Zbl 0784.46029</a>; <a href="?an=0974.46040">Zbl 0974.46040</a></p>
 
+    def article( args={} )
+      opts = {:id => nil, :title => "", :year => "", :authors => [], :references => true, :entities => false}.merge(args)
+      page = fetch_article(opts)
+      xml = ::REXML::Document.new page
+
+      articles = []
+      xml.elements.each("//zbml/answers/rec") do |element|
+        article = Article.new({
+          :id => get_element(element, "an"),
+          :title => get_element(element, "ti"),
+          :authors => get_element(element, "au").split(/;\s*/),
+          :language => get_element(element, "la"),
+          :msc => normalize_mscs(get_element(element,"cc").split(" ")),
+          :year => get_element(element, "py"),
+          :keywords => get_element(element, "ut").split(/;\s*/),
+          :issn => get_element(element, "is").split(/;\s*/),
+          :publication => get_element(element, "so")
+        })
+        article.references = get_article_references(get_element(element, "ci")) if opts[:references]
+        article.publication =~ /,\s*(\d+-\d+)\s*\(\d{4}\)/
+        article.range = $1
+        articles << article
+      end
+
+      articles
+    end
+
     protected
+
+    def get_element(xml, path)
+      element = xml.elements.each(path){|e|}.first
+      return "" unless element
+      CGI::unescapeHTML(element.children.first.to_s.strip)
+    end
 
     def join_article_authors( authors )
       authors.collect { |author| "au:#{URI.escape author}" }.join("%26")
     end
 
-    def get_article_references( page )
-      page =~ self.class::ARTICLE_REFERENCES_RE
-      ids = $1.to_s.gsub(/<.*?>/,'').gsub(/zbl /i,'').strip.split('; ')
+    def get_article_references( str )
+      ids = str.to_s.split(/;\s*/)
       references = []
       ids.each do |id|
         references << article(:id => id, :references => false).first
       end
       references
     end
+
 
   end # ZBL
 

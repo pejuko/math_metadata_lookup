@@ -15,7 +15,7 @@ module MathMetadata
     AUTHOR_URL = %~http://www.ams.org/mathscinet/search/authors.html?authorName=%s&Submit=Search~
 
     AUTHORS_RE = %r{<h1 class="profileHead">(.*)<\/h1>.*?<li>\s*MR Author ID:\s*<b>\s*(\d+)\s*</b></li>(?:.*?<ul class="variations">(.*?)<\/ul>)?}mi
-    AUTHOR_RE = %r{<li>(.*)<\/li>}mi
+    AUTHOR_RE = %r{<li>(.*?)<\/li>}mi
 
 
     ARTICLE_ID_URL = "http://www.ams.org/msnmain?preferred_language=en&pg3=MR&s3=%s&l=20&reference_lists=show&simple_headlines=full&contributed_items=show&redirect=Providence%%2C+RI+USA&Submit=Start+Search&fn=130&form=basicsearch"

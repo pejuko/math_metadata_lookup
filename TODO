@@ -2,9 +2,9 @@ Tasks
 =====
 
 o cache
-o heuristic
-  o joining results
-  o guess relevant article if possible
+- heuristic
+  x joining results
+  - guess relevant article if possible
 
 
 Completed

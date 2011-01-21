@@ -5,9 +5,9 @@ module MathMetadata
 
   # Mathematical Reviews
   # http://www.ams.org/mr-database
-  class MRev < Site
-    CODE = :mrev
-    NAME = "Mathematical Reviews"
+  class MR < Site
+    ID = :mr
+    NAME = "MathSciNet"
     URL = "http://www.ams.org/mr-database"
 
 

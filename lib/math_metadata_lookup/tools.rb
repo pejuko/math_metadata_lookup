@@ -6,6 +6,8 @@ module MathMetadata
   class << self
 
     def levenshtein_distance( s1, s2 )
+      return 1.0 if s1 == s2
+
       s1u, s2u = s1.split(//u), s2.split(//u)
       tab = Array.new(s1u.size+1){ Array.new(s2u.size+1){0} }
 

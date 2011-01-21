@@ -3,11 +3,11 @@ module MathMetadata
   class Article < Entity
 
     def ==(article)
-      distance(article) > 0.5
+      similarity(article) > 0.9
     end
 
 
-    def distance(article)
+    def similarity(article)
       td = MathMetadata.levenshtein_distance @metadata[:title].to_s, article[:title].to_s
       ad = MathMetadata.levenshtein_distance [@metadata[:authors]].flatten.sort.join(";"), [article[:authors]].flatten.sort.join(";")
       yd = MathMetadata.levenshtein_distance @metadata[:year].to_s, article[:year].to_s
@@ -23,6 +23,7 @@ module MathMetadata
     def to_text
       result = ""
       result += %~Id: #{@metadata[:id]}
+Similarity: #{@metadata[:similarity]}
 Publication: #{@metadata[:publication]}
 Title: #{@metadata[:title]}
 Authors: #{[@metadata[:authors]].flatten.join("; ")}

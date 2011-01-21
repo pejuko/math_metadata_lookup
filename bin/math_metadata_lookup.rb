@@ -8,7 +8,7 @@ $:.unshift File.expand_path(File.join(File.dirname(__FILE__), "../lib"))
 
 def print_help
   puts ""
-  puts "#{$0} <article|author|heuristic> -t <title> -a <author> -i <id> -s <mrev|zbl> -f <text|html|xml|ruby|yaml>"
+  puts "#{$0} <article|author|heuristic> -t <title> -a <author> -i <id> -s <mrev|zbl> -f <text|html|xml|ruby|yaml> --threshold <float>"
   puts ""
   puts "Examples:"
   puts %~#{$0} article -t "Sobolev embeddings with variable exponent. II"~
@@ -35,7 +35,8 @@ opts = GetoptLong.new(
   ["--id", "-i", GetoptLong::REQUIRED_ARGUMENT],
   ["--site", "-s", GetoptLong::REQUIRED_ARGUMENT],
   ["--verbose", "-v", GetoptLong::NO_ARGUMENT],
-  ["--format", "-f", GetoptLong::REQUIRED_ARGUMENT]
+  ["--format", "-f", GetoptLong::REQUIRED_ARGUMENT],
+  ["--threshold", "-d", GetoptLong::REQUIRED_ARGUMENT]
 )
 
 $options = {:sites => [], :authors => [], :format => :text, :verbose => false}
@@ -48,6 +49,8 @@ opts.each do |opt, val|
     $options["#{optkey}s".to_sym] << val.strip
   when :format
     $options[optkey] = val.strip.to_sym
+  when :threshold
+    $options[optkey] = val.to_f
   when :verbose
     $options[optkey] = true
   end

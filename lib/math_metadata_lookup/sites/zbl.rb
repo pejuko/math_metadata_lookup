@@ -6,7 +6,7 @@ module MathMetadata
   # Zentralblatt
   # http://www.zentralblatt-math.org/zmath/
   class ZBL < Site
-    CODE = :zbl
+    ID = :zbl
     NAME = "Zentralblatt"
     URL = "http://www.zentralblatt-math.org/zmath/"
 

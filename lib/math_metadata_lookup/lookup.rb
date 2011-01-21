@@ -41,8 +41,12 @@ module MathMetadata
       opts = {:threshold => 0.6}.merge(args)
       result = Result.new
       
-      sites = article(args)
+      # use only authors surnames
+      args_dup = args.dup
+      args_dup[:authors].map!{|a| a =~ /([^,]+)/; $1}
+      sites = article(args_dup)
 
+      # query article has to contain full names
       query_article = Article.new( {:title => args[:title].to_s, :authors => args[:authors], :year => args[:year]} )
       sites.each do |site|
         site[:result].each do |article|
@@ -68,7 +72,7 @@ module MathMetadata
 
       opts = {:threshold => 0.6}.merge(args)
       opts[:title] = ref.article[:title]
-#      opts[:authors] = ref.article[:authors]
+      opts[:authors] = ref.article[:authors]
       opts[:year] = ref.article[:year]
 
       heuristic opts

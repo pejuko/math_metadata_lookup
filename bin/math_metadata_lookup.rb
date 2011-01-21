@@ -8,7 +8,7 @@ $:.unshift File.expand_path(File.join(File.dirname(__FILE__), "../lib"))
 
 def print_help
   puts ""
-  puts "#{$0} <article|author|heuristic> -t <title> -a <author> -i <id> -s <mrev|zbl> -f <text|html|xml|ruby|yaml> --threshold <float>"
+  puts "#{$0} <article|author|heuristic|reference> -r <reference string> -t <title> -a <author> -i <id> -s <mrev|zbl> -f <text|html|xml|ruby|yaml> --threshold <float>"
   puts ""
   puts "Examples:"
   puts %~#{$0} article -t "Sobolev embeddings with variable exponent. II"~
@@ -36,14 +36,15 @@ opts = GetoptLong.new(
   ["--site", "-s", GetoptLong::REQUIRED_ARGUMENT],
   ["--verbose", "-v", GetoptLong::NO_ARGUMENT],
   ["--format", "-f", GetoptLong::REQUIRED_ARGUMENT],
-  ["--threshold", "-d", GetoptLong::REQUIRED_ARGUMENT]
+  ["--threshold", "-d", GetoptLong::REQUIRED_ARGUMENT],
+  ["--reference", "-r", GetoptLong::REQUIRED_ARGUMENT]
 )
 
 $options = {:sites => [], :authors => [], :format => :text, :verbose => false}
 opts.each do |opt, val|
   optkey = opt[2..-1].to_sym
   case optkey
-  when :title, :id, :year
+  when :title, :id, :year, :reference
     $options[optkey] = val.strip
   when :site, :author
     $options["#{optkey}s".to_sym] << val.strip
@@ -75,6 +76,8 @@ when 'author'
   l.author :name => $options[:authors].first, :format => args[:format]
 when 'heuristic'
   l.heuristic args
+when 'reference'
+  l.reference args
 else
   print_help
   exit 1

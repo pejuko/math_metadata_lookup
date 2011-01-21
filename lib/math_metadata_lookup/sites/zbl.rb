@@ -85,8 +85,8 @@ module MathMetadata
     def get_article_references( str )
       ids = str.to_s.split(/;\s*/)
       references = []
-      ids.each do |id|
-        references << article(:id => id, :references => false).first
+      ids.each_with_index do |id, idx|
+        references << Reference.new(article(:id => id, :references => false).first, idx+1)
       end
       references
     end

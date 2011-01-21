@@ -89,10 +89,12 @@ module MathMetadata
 
       when /^get_(.*)_s$/
         res = []
-        re = eval("self.class::#{$1.upcase}_RE")
-        re_s = eval("self.class::#{$1.upcase}S_RE")
+        what = $1
+        re = eval("self.class::#{what.upcase}_RE")
+        re_s = eval("self.class::#{what.upcase}S_RE")
         page =~ re_s
-        $1.to_s.strip.scan(re) do |match|
+        entries = $1
+        entries.to_s.strip.scan(re) do |match|
           res << match[0].to_s.strip
         end
         return res
@@ -120,60 +122,15 @@ module MathMetadata
     def get_article_references( page )
       references = []
 
+      refs = get_article_reference_s page
+
       i = 0;
-      page.scan(self.class::ARTICLE_REFERENCES_RE) do |match|
+      refs.each do |r|
         i+=1
-        entry = {:number => i, :string => match[0].gsub(/<.*?>/,'').gsub(/  +/,' ').strip}
-
-        # 1=authors, 2=title, 3=publication, 4=year, 5=range, 6=id, 7=place, 8=publisher
-        found = []
-        (1..10).each do |j|
-          re = eval("self.class::ARTICLE_REFERENCE_#{j}_RE")
-          if entry[:string] =~ re
-            case j
-            when 1
-              # 1=authors, 2=title, 3=publication, 4=year, 5=range, 6=id
-              found = [$1, $2, $3, $4, $5, $6]
-            when 2
-              # 1=authors, 2=title, 3=publication, 4=range, 5=publisher, 6=place, 7=year, 8=id
-              found = [$1, $2, $3, $7, $4, $8, $6, $5]
-            when 3
-              # 1=authors, 2=title, 3=range, 4=publication, 5=place, 6=year
-              found = [$1, $2, $4, $6, $3, nil, $5]
-            when 4
-              # 1=authors, 2=title, 3=publication, 4=publisher, 5=place, 6=year, 7=id
-              found = [$1, $2, $3, $6, nil, $7, $5, $4]
-            when 5
-              # 1=authors, 2=title, 3=publisher, 4=place, 5=year, 6=id
-              found = [$1, $2, nil, $5, nil, $6, $4, $3]
-            when 6
-              # 1=authors, 2=title, 3=publisher, 4=place, 5=year, 6=id
-              found = [$1, $2, nil, $5, nil, $6, $4, $3]
-            when 7
-              # 1=authors, 2=title, 3=publication, 4=year, 5=range, 6=id
-              found = [$1, $2, $3, $4, $5, $6]
-            when 8
-              # 1=authors, 2=title, 3=publication, 4=year, 5=range, 6=id
-              found = [$1, $2, $3, $4, $5, $6]
-            when 9
-              # 1=authors, 2=title, 3=publisher, 4=place
-              found = [$1, $2, nil, nil, nil, nil, $4, $3]
-            when 10
-              # 1=authors, 2=title, 3=publication, 4=id
-              found = [$1, $2, $3, nil, nil, $4, nil, nil]
-            end
-            found.unshift(j)
-            break
-          end
-        end
-
-        [:reg, :authors, :title, :publication, :year, :range, :id, :place, :publisher].each_with_index do |key, idx|
-          entry[key] = found[idx]
-        end
-
-        references << entry
+        ref = Reference.new r.gsub(/<.*?>/,'').gsub(/  +/,' ').strip, i
+        references << ref
       end
-
+      
       references
     end
 
@@ -211,7 +168,7 @@ module MathMetadata
 
     def get_article_list( page )
       articles = []
-      page.scan(self.class::ARTICLE_ENTRY_RE) do |match|
+      page.scan(self.class::ARTICLE_ENTRY_RE).each do |match|
         articles << article(:id => match[0]).first
       end
       articles

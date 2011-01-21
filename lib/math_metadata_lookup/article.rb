@@ -41,8 +41,9 @@ Pages: #{@metadata[:range]}
 ISSN: #{@metadata[:issn].join('; ')}
 Keywords: #{@metadata[:keywords].join('; ')}~
       @metadata[:references].to_a.each_with_index do |ref, idx|
+        a = ref.article
         result += %~
-Ref.: #{idx+1}. #{[ref[:authors]].flatten.join("; ")}: #{ref[:title]}~
+Ref.: #{idx+1}. #{[a[:authors]].flatten.join("; ")}: #{a[:title]}~
       end
       result += "\n\n"
       result

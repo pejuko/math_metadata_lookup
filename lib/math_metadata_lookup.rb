@@ -14,6 +14,7 @@ require 'math_metadata_lookup/result'
 require 'math_metadata_lookup/entity'
 require 'math_metadata_lookup/article'
 require 'math_metadata_lookup/author'
+require 'math_metadata_lookup/reference'
 
 # abstract class for sites
 require 'math_metadata_lookup/site'

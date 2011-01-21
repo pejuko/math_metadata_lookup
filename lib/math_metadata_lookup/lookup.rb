@@ -60,6 +60,20 @@ module MathMetadata
       sites
     end
 
+
+    # parse reference string and execute heuristic to query for article in databases
+    def reference( args={} )
+      ref = Reference.new args[:reference]
+      pp ref
+
+      opts = {:threshold => 0.6}.merge(args)
+      opts[:title] = ref.article[:title]
+#      opts[:authors] = ref.article[:authors]
+      opts[:year] = ref.article[:year]
+
+      heuristic opts
+    end
+
   end # Lookup
 
 end # module

@@ -104,7 +104,7 @@ module MathMetadata
     def self.split_authors( str )
       res = [
         /;\s*/,
-        /,?\s*(?:and|und|et)\s*/,
+        /,?\s*(?:and|und|et)\s+/,
         /(\S+,\s*[^,]+),?\s*/
       ]
 

@@ -137,22 +137,18 @@ module MathMetadata
 
     def get_article_msc( page )
       mscs = get_article_msc_s page
-      mscs = normalize_mscs(mscs)
+      mscs = MathMetadata.normalize_mscs(mscs)
       mscs
     end
 
 
-    def normalize_mscs( mscs )
-      mscs.map{|m| m.split(/,|;/) }.flatten.map{|m| m =~ /\s*\(?([^\s\)\(]+)\)?\s*/; $1}
-    end
-    
     def get_article( page, opts={} )
       a = Article.new( {
         :id => get_article_id(page),
         :authors => get_article_author_s(page),
         :msc => get_article_msc(page),
         :publication => get_article_publication(page),
-        :range => normalize_range(get_article_range(page)),
+        :range => MathMetadata.normalize_range(get_article_range(page)),
         :year => get_article_year(page),
         :keywords => get_article_keyword_s(page),
         :issn => get_article_issn_s(page)
@@ -175,25 +171,11 @@ module MathMetadata
     end
 
 
-    def normalize_range( range )
-      range.to_s.gsub(/–|--/,'-')
-    end
-
-
-    def normalize_name( name )
-      trans = I18n.transliterate( name.to_s )
-  
-      # vyresim: Surname, N.M. => Surname, N. M.
-      # mrev to jinak nenajde
-      trans.gsub( /([^\s,])?\.([^\s,])/, '\1. \2' )
-    end
-  
-
     def nwords(s)
       s.split(" ")[0...@options[:nwords].to_i].join(" ")
     end
 
-  
+
     def fetch_page( url, args={} )
       opts = {:entities => true}.merge(args)
   
@@ -206,7 +188,7 @@ module MathMetadata
   
   
     def fetch_author( name )
-      nn = normalize_name(name)
+      nn = MathMetadata.normalize_name(name)
       url = self.class::AUTHOR_URL % URI.escape(nn)
   
       fetch_page(url)
@@ -214,7 +196,7 @@ module MathMetadata
   
 
     def join_article_authors( authors )
-      authors.collect { |author| URI.escape normalize_name(author) }.join('; ') || ''
+      authors.collect { |author| URI.escape MathMetadata.normalize_name(author) }.join('; ') || ''
     end
   
     def fetch_article( args={} )

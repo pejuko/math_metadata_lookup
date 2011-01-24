@@ -33,6 +33,25 @@ module MathMetadata
       end
       1 - (tab.last.last.to_f / ([s1u.size, s2u.size].sort.last))
     end # levenshtein_distance
+
+
+    def normalize_range( range )
+      range.to_s.gsub(/–|--/,'-')
+    end
+
+
+    def normalize_mscs( mscs )
+      mscs.map{|m| m.split(/,|;/) }.flatten.map{|m| m =~ /\s*\(?([^\s\)\(]+)\)?\s*/; $1}
+    end
+
+
+    def normalize_name( name )
+      trans = I18n.transliterate( name.to_s )
+  
+      # vyresim: Surname, N.M. => Surname, N. M.
+      # mrev to jinak nenajde
+      trans.gsub( /([^\s,])?\.([^\s,])/, '\1. \2' )
+    end
  
   end # <<self
 

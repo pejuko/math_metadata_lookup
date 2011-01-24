@@ -36,7 +36,7 @@ Title: #{@metadata[:title]}
 Authors: #{[@metadata[:authors]].flatten.join("; ")}
 Year: #{@metadata[:year]}
 Language: #{@metadata[:language]}
-MSC: #{@metadata[:msc].join("; ")}
+MSC: #{[@metadata[:msc]].flatten.join("; ")}
 Pages: #{@metadata[:range]}
 ISSN: #{@metadata[:issn].join('; ')}
 Keywords: #{@metadata[:keywords].join('; ')}~

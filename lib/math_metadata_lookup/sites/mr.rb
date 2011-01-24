@@ -48,8 +48,17 @@ module MathMetadata
       i = 4
       authors.collect { |author| 
         i += 1
-        "pg#{i}=AUCN&s#{i}=#{URI.escape normalize_name(author)}&co#{i}=AND"
+        "pg#{i}=AUCN&s#{i}=#{URI.escape MathMetadata.normalize_name(author)}&co#{i}=AND"
       }.join("&")
+    end
+
+    def get_article_references( page )
+      refs = super page
+      refs.each do |r|
+        r.source =~ /(MR[^\s]+)/
+        r.article[:id] = $1
+      end
+      refs 
     end
 
   end # MRev

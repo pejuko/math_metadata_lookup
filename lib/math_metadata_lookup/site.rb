@@ -51,7 +51,8 @@ module MathMetadata
       if list_of_articles?(page)
         articles = get_article_list(page)
       else
-        articles << get_article(page, opts)
+        a = get_article(page, opts)
+        articles << a unless a[:title].to_s.strip.empty?
       end
   
       return nil if articles.size == 0
@@ -165,7 +166,8 @@ module MathMetadata
     def get_article_list( page )
       articles = []
       page.scan(self.class::ARTICLE_ENTRY_RE).each do |match|
-        articles << article(:id => match[0]).first
+        a = article(:id => match[0]).first
+        articles << a unless a[:title].to_s.strip.empty?
       end
       articles
     end

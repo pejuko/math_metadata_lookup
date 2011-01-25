@@ -24,7 +24,7 @@ module MathMetadata
       end
 
       sites.each do |klass|
-        site = klass.new(:verbose => @options[:verbose])
+        site = klass.new(:verbose => @options[:verbose], :nwords => args[0][:nwords])
 
         entry = {:site => klass::ID, :name => klass::NAME, :url => klass::URL}
         entry[:result] = site.send(meth, *args)
@@ -45,20 +45,21 @@ module MathMetadata
       args_dup = args.dup
       args_dup[:authors].map!{|a| a =~ /([^,]+)/; $1 ? $1 : a}
       args_dup[:authors].map!{|a| a =~ /([^ ]+) \S+/; $1 ? $1 : a}
+      args_dup[:nwords] = 2
       sites = article(args_dup)
 
       # query article has to contain full names
       query_article = Article.new( {:title => args[:title].to_s, :authors => args[:authors], :year => args[:year]} )
       sites.each do |site|
-        site[:result].each do |article|
+        site[:result].to_a.each do |article|
           next if article[:title].to_s.empty?
           article[:similarity] = query_article.similarity(article)
         end
-        site[:result].delete_if{|a| a[:similarity].to_f < opts[:threshold].to_f}
-        if site[:result].size > 0
+        site[:result].to_a.delete_if{|a| a[:similarity].to_f < opts[:threshold].to_f}
+        if site[:result].to_a.size > 0
           site[:result].sort!{|a,b| a[:similarity]<=>b[:similarity]}
           site[:result].reverse!
-          site[:result] = [site[:result].first]
+          site[:result] = [site[:result].to_a.first]
         end
       end
 

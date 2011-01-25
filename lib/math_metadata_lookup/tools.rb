@@ -1,6 +1,8 @@
 # -*-: coding: utf-8 -*-
 # vi: fenc=utf-8:expandtab:ts=2:sw=2:sts=2
 
+require 'unicode'
+
 module MathMetadata
 
   class << self
@@ -46,11 +48,61 @@ module MathMetadata
 
 
     def normalize_name( name )
-      trans = I18n.transliterate( name.to_s )
+      # only latin chars
+      trans = latex_to_utf8(name.to_s)
+      trans = I18n.transliterate(trans)
+
+      # remove Jr. 
+      trans.sub! %r{\bjr\.(\b|$)}i, ' '
+
+      # remove abbr.: Rakosnik, J. => Rakosnik, 
+      trans.sub! %r{(\W|^)\w\.}i, ' '
   
-      # vyresim: Surname, N.M. => Surname, N. M.
-      # mrev to jinak nenajde
+      # transform: Surname, N.M. => Surname, N. M.
       trans.gsub( /([^\s,])?\.([^\s,])/, '\1. \2' )
+
+      #MathMetadata.remove_punctuation(trans)
+      trans
+    end
+
+
+    def remove_punctuation( s )
+      str = s.gsub %r{(\w)[.,]+( |$)}i, '\1 '
+      str.gsub! %r{(\s)[.,]+( |$)}i, '\1 '
+      str.strip
+    end
+
+
+    def normalize_text( s )
+      str = latex_to_utf8(s)
+      str = I18n.transliterate(str).downcase
+      str = remove_punctuation(str)
+      str.gsub!(%r{\W+}, ' ')
+      str.gsub!(%r{(?:the|a|of|)\s+}i, ' ')
+      str.strip
+    end
+
+    ACCENT_REPL = {
+      "`" => "\u0300", # grave accent
+      "'" => "\u0301", # acute accent
+      "^" => "\u0302", # circumflex
+      '"' => "\u0308", # umlaut or dieresis
+      "~" => "\u0303", # tilde
+      "H" => "\u030b", # long Hungarian umlaut (double acute)
+      "c" => "\u0327", # cedilla
+      "=" => "\u0304", # macron accent
+      "." => "\u0307", # dot over the letter
+      "r" => "\u030a", # ring over the letter
+      "u" => "\u0306", # breve over the letter
+      "v" => "\u030c"  # caron/hacek ("v") over the letter
+    }
+    
+    def latex_to_utf8( s )
+      str = s.gsub( /\\(.)(?:([a-zA-Z])|{([a-zA-Z])}|{\\([a-zA-Z])})/ ) do |match|
+        accent = ACCENT_REPL[$1]
+        char = $2 || $3 || $4
+        accent ? Unicode.normalize_KC( char + accent ) : match
+      end
     end
  
   end # <<self

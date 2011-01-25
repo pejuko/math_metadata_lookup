@@ -192,6 +192,10 @@ module MathMetadata
     def fetch_author( name )
       nn = MathMetadata.normalize_name(name)
       url = self.class::AUTHOR_URL % URI.escape(nn)
+
+      puts ""
+      pp url
+      puts ""
   
       fetch_page(url)
     end
@@ -208,6 +212,7 @@ module MathMetadata
         author = join_article_authors opts[:authors]
         title = opts[:title]
         title = '' if not title.kind_of?(String)
+        title = MathMetadata.normalize_text(title)
         title = nwords(title) if @options[:nwords]
         url = self.class::ARTICLE_URL % [URI.escape(title), author, opts[:year].to_s]
       end

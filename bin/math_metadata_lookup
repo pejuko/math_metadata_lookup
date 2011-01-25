@@ -7,13 +7,55 @@ $KCODE="UTF8" if RUBY_VERSION < "1.9"
 $:.unshift File.expand_path(File.join(File.dirname(__FILE__), "../lib"))
 
 def print_help
-  puts ""
-  puts "#{$0} <article|author|heuristic|reference> -r <reference string> -t <title> -a <author> -i <id> -s <mrev|zbl> -f <text|html|xml|ruby|yaml> --threshold <float>"
-  puts ""
-  puts "Examples:"
-  puts %~#{$0} article -t "Sobolev embeddings with variable exponent. II"~
-  puts %~#{$0} article -t "Sobolev embeddings" -a "Rakosnik, Jiri" -a "Edmunds, David" -f html~
-  puts %~#{$0} author -a "Vesely, Jiri"~
+  puts "
+  Search mathematical reviews sites and fetches metadata about articles.
+
+  #{$0} <command> <options>
+
+  
+  Commands: article, author, heuristic, reference
+
+  article  -- create and run query for each site and return results
+  
+    --title, -t <title>
+    --author, -a <author>   -- repeatable option
+    --year, -y <year>
+
+    --id, -i <id>           -- if id is used, year, title and author are ignored
+                               it is good to use it with -s option
+
+  author  -- search for authors \"name forms\"
+
+    --author, -a <author>   -- only once
+
+
+  heuristic -- returns only one best match from each site where
+               similarity is higher the threshold
+
+    --title, -t <title>
+    --author, -a <author>       -- repeatable option
+    --year, -y <year>
+    --threshold, -d <0.0...1.0> -- default: 0.6
+
+
+  reference -- parse reference string and run heuristic
+
+    --reference, -r <string with reference>  -- parse the string to get title, authors and year
+    --threshold, -d <0.0...1.0>              -- default: 0.6
+
+
+  common options:
+    --site, -s <mr,zbl>                      -- repeatable, sites to search on, default: all
+    --format, -f <text|html|xml|ruby|yaml>   -- output format, default: text
+
+
+  Examples:
+
+  #{$0} article -t \"Sobolev embeddings with variable exponent. II\"
+  #{$0} article -t \"Sobolev embeddings\" -a \"Rakosnik, Jiri\" -a \"Edmunds, David\" -f html
+  #{$0} author -a \"Vesely, Jiri\"
+  #{$0} reference -r \"Kufner, A., John, O., and Fučík, S.: Function Spaces, Noordhoff, Leyden, and Academia, Prague, 1977\" -d 0.4
+"
 end
 
 require 'pp'

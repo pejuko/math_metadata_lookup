@@ -2,10 +2,15 @@ About
 -----
 
 This utility search mathematical reviews sites and fetches metadata about articles.
+It can return results as one of text, xml, html, yaml or ruby formats.
 
 
 Command line usage example
 --------------------------
+
+To get full help run it without any argument
+
+    math_metadata_lookup
 
 Fetching metadata about an article:
 

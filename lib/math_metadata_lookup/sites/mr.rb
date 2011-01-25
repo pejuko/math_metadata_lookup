@@ -20,7 +20,8 @@ module MathMetadata
 
     ARTICLE_ID_URL = "http://www.ams.org/msnmain?preferred_language=en&pg3=MR&s3=%s&l=20&reference_lists=show&simple_headlines=full&contributed_items=show&redirect=Providence%%2C+RI+USA&Submit=Start+Search&fn=130&form=basicsearch"
 #    ARTICLE_URL = "http://www.ams.org/mathscinet/search/publications.html?pg4=TI&s4=%s&co4=AND&%s&Submit=Search&dr=all&yrop=eq&arg3=%s&dr=pubyear&yearRangeFirst=&yearRangeSecond=&pg8=ET&s8=All&review_format=html"
-    ARTICLE_URL = "http://www.ams.org/mathscinet/search/publdoc.html?co4=AND&dr=pubyear&pg4=TI&pg8=ET&r=1&review_format=html&s4=%s&%s&All&vfpref=html&yearRangeFirst=&yearRangeSecond=&yrop=eq&arg3=%s"
+    #ARTICLE_URL = "http://www.ams.org/mathscinet/search/publdoc.html?co4=AND&dr=pubyear&pg4=TI&pg8=ET&r=1&review_format=html&s4=%s&%s&All&vfpref=html&yearRangeFirst=&yearRangeSecond=&yrop=eq&arg3=%s"
+    ARTICLE_URL = "http://www.ams.org/mathscinet/search/publications.html?co4=AND&dr=pubyear&pg4=TI&pg8=ET&r=1&review_format=html&s4=%s&%s&All&vfpref=html&yearRangeFirst=&yearRangeSecond=&yrop=eq&arg3=%s"
 
     LIST_OF_ARTICLES_RE = %r{<strong>Matches:</strong>\s*\d*}mi
     ARTICLE_ENTRY_RE = %r{<div class="headlineText">\s*<a href="/mathscinet/search/publdoc.html[^"]+">\s*<strong>\s*([^< ]+)\s*</strong>\s*<strong>}mi

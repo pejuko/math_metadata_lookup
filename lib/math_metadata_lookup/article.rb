@@ -81,9 +81,11 @@ Ref.: #{idx+1}. #{[a[:authors]].flatten.join("; ")}: #{a[:title]}~
         result += %~
             <references>
 ~
-      @metadata[:references].to_a.each_with_index do |ref, idx|
+      @metadata[:references].to_a.each_with_index do |reference, idx|
+        ref = reference.article
         result += %~
                 <reference id="#{::CGI.escapeHTML ref[:id].to_s}" number="#{::CGI.escapeHTML(ref[:number].to_s || (idx+1).to_s)}">
+                    <source>#{::CGI.escapeHTML reference.source}</source>
                     <authors>~
         [ref[:authors]].flatten.each do |author|
           result += %~
@@ -122,10 +124,11 @@ Ref.: #{idx+1}. #{[a[:authors]].flatten.join("; ")}: #{a[:title]}~
         <a href="javascript:toggle_references('ref#{@metadata[:id]}')">References >>></a>
         <div id="ref#{@metadata[:id]}" name="ref#{@metadata[:id]}"class="references">
 ~
-      @metadata[:references].to_a.each_with_index do |ref, idx|
+      @metadata[:references].to_a.each_with_index do |reference, idx|
+        ref = reference.article
         result += %~
             <div class="reference">
-                Number: #{ref[:number] || idx+1}
+                Source: #{reference.source}
                 Authors: #{[ref[:authors]].flatten.join("; ")}
                 Title: #{ref[:title]}
                 Publication: #{ref[:publication]}

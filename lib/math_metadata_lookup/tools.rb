@@ -98,7 +98,7 @@ module MathMetadata
     }
     
     def latex_to_utf8( s )
-      str = s.gsub( /\\(.)(?:([a-zA-Z])|{([a-zA-Z])}|{\\([a-zA-Z])})/ ) do |match|
+      str = s.gsub( /\\(.)(?:([a-zA-Z])|\{([a-zA-Z])\}|\{\\([a-zA-Z])\})/ ) do |match|
         accent = ACCENT_REPL[$1]
         char = $2 || $3 || $4
         accent ? Unicode.normalize_KC( char + accent ) : match

@@ -18,7 +18,7 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('i18n', '>= 0.5.0')
   s.add_dependency('unicode')
   s.require_path = 'lib'
-  s.files = ["bin/math_metadata_lookup", "README.md", "math_metadata_lookup.gemspec", "TODO"]
+  s.files = ["bin/math_metadata_lookup", "README.md", "math_metadata_lookup.gemspec", "TODO", "Rakefile"]
   s.files += Dir["lib/**/*.rb"]
   s.executables = ["math_metadata_lookup"]
   s.description = <<EOF

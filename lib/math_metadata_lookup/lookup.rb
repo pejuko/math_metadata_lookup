@@ -70,7 +70,7 @@ module MathMetadata
     # parse reference string and execute heuristic to query for article in databases
     def reference( args={} )
       ref = Reference.new args[:reference]
-      pp ref
+      pp ref if args[:verbose]
 
       opts = {:threshold => 0.6}.merge(args)
       opts[:title] = ref.article[:title]

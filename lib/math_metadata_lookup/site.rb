@@ -193,10 +193,6 @@ module MathMetadata
       nn = MathMetadata.normalize_name(name)
       url = self.class::AUTHOR_URL % URI.escape(nn)
 
-      puts ""
-      pp url
-      puts ""
-  
       fetch_page(url)
     end
   

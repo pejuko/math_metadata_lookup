@@ -9,6 +9,9 @@ It can work with LaTeX accent notation.
 Installation
 ------------
 
+``math_metadata_lookup`` is written in Ruby. Consult your system documentation how to install ruby and rubygems,
+then you can install ``math_metadata_lookup`` using rubygems:
+
     gem install math_metadata_lookup
 
 

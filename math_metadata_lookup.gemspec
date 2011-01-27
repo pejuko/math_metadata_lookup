@@ -15,8 +15,9 @@ spec = Gem::Specification.new do |s|
   s.name = 'math_metadata_lookup'
   s.version = '0.1.2'
   s.date = Time.now.strftime("%Y-%m-%d")
-  s.add_dependency('i18n', '>= 0.5.0')
+  s.add_dependency('i18n', '>= 0.4.0')
   s.add_dependency('unicode')
+  s.add_dependency('ya2yaml')
   s.require_path = 'lib'
   s.files = ["bin/math_metadata_lookup", "README.md", "math_metadata_lookup.gemspec", "TODO", "Rakefile"]
   s.files += Dir["lib/**/*.rb", "resources/*"]

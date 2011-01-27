@@ -61,7 +61,6 @@ def print_help
 end
 
 require 'pp'
-require 'yaml'
 require 'rubygems'
 require 'math_metadata_lookup'
 

@@ -1,6 +1,8 @@
 # -*-: coding: utf-8 -*-
 # vi: fenc=utf-8:expandtab:ts=2:sw=2:sts=2
 
+require 'ya2yaml'
+
 module MathMetadata
 
   class Result
@@ -69,7 +71,7 @@ module MathMetadata
 
 
     def to_yaml
-      @metadata.to_yaml
+      @metadata.ya2yaml
     end
 
 

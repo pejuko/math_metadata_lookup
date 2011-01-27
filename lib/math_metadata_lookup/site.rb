@@ -45,7 +45,7 @@ module MathMetadata
       page = fetch_article(opts)
       articles = []
   
-      return metadata unless page
+      return articles unless page
 
       if list_of_articles?(page)
         articles = get_article_list(page)

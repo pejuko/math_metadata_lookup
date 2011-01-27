@@ -2,9 +2,7 @@ Tasks
 =====
 
 o cache
-- heuristic
-  x joining results
-  - guess relevant article if possible
+o tests
 
 
 Completed
@@ -13,3 +11,7 @@ Completed
 * year argument
 * support for references
 * xml output
+* heuristic
+  x joining results
+  * guess relevant article if possible
+

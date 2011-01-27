@@ -33,10 +33,11 @@ module MathMetadata
     def to_html
       result = ""
       @metadata.each do |site|
+        next unless site[:result]
         result << %~
 <div class="site">
     <h3>Site: #{site[:name]}</h3>~
-        site[:result].each do |entity|
+        site[:result].to_a.each do |entity|
           result << entity.to_html
         end
         result << %~</div>~
@@ -51,6 +52,7 @@ module MathMetadata
       result << %~<?xml version="1.0" encoding="utf-8"?>
 <mml>~
       @metadata.each do |site|
+        next unless site[:result]
         result << %~
     <site name="#{site[:name]}">~
         site[:result].each do |entity|

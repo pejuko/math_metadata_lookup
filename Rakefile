@@ -5,6 +5,7 @@
 $KCODE='UTF8'
 
 require 'rake/gempackagetask'
+require 'rake/rdoctask'
 require 'rake/clean'
 
 CLEAN << "coverage" << "pkg" << "README.html" << "CHANGELOG.html" << '*.rbc'
@@ -27,10 +28,15 @@ begin
     File.open(htmlfile, "w") { |f| f << md.to_html }
   end
 
-  task :doc => [:readme]
+  task :doc => [:readme, :rdoc]
 
   task :readme do |t|
     build_document("README.md")
+  end
+
+  Rake::RDocTask.new do |rd|
+    rd.main = "README.md"
+    rd.rdoc_files.include("README.md", "lib/**/*.rb", "bin/*")
   end
 
 rescue LoadError

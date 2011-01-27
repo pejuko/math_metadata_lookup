@@ -5,6 +5,12 @@ This utility search mathematical reviews sites and fetches metadata about articl
 It returns results as one of text, xml, html, yaml or ruby formats.
 
 
+Installation
+------------
+
+    gem install math_metadata_lookup
+
+
 Command line usage example
 --------------------------
 
@@ -56,14 +62,48 @@ Hash arguments are:
 * article id is unknown 
   * **:title** String
   * **:authors** Array of strings
+  * **:year**
 
 Returns instance of class Result.
 
 
 #Lookup#author( hash )
 
+Search for authors "name forms".
+
 Hash arguments are:
 
 * **:name** String. Author name.
 
 Returns instance of class Result.
+
+
+#Lookup#heuristic( hash )
+
+Returns only one best match from each site where similarity is higher then threshold.
+It runs article searh with first two words from title and only surnames from author names.
+The result of search is sorted by similarity and articles with similarity less then threshold are deleted.
+Similarity is count as weighted average from title, authors and year using Levenshtein distance method.
+The Levenshtein distance function is run on full given title and full given names.
+
+Hash arguments are:
+
+* **:title**   String
+* **:author**  Array of strings
+* **:year**    String
+* **:threshold** Float. Range: 0.0...1.0. Default: 0.6
+
+Returns instance of class Result.
+
+
+#Lookup#reference( hash )
+
+Parse reference string and run heuristic.
+
+Hash arguments are:
+
+* **:reference**   String
+* **:threshold**   Float. Range: 0.0...1.0. Default: 0.6
+
+Returns instance of class Result.
+

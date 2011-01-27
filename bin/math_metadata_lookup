@@ -9,6 +9,7 @@ $:.unshift File.expand_path(File.join(File.dirname(__FILE__), "../lib"))
 def print_help
   puts "
   Search mathematical reviews sites and fetches metadata about articles.
+  https://github.com/pejuko/math_metadata_lookup
 
   #{$0} <command> <options>
 
@@ -30,7 +31,7 @@ def print_help
 
 
   heuristic -- returns only one best match from each site where
-               similarity is higher the threshold
+               similarity is higher then threshold
 
     --title, -t <title>
     --author, -a <author>       -- repeatable option

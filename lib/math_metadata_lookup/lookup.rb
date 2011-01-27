@@ -38,11 +38,11 @@ module MathMetadata
 
     # try to decide what is best result for query and combine results from all sites to one article response
     def heuristic( args={} )
-      opts = {:threshold => 0.6}.merge(args)
+      opts = {:threshold => 0.6, :authors => []}.merge(args)
       result = Result.new
       
       # use only authors surnames
-      args_dup = args.dup
+      args_dup = opts.dup
       args_dup[:authors].map!{|a| a =~ /([^,]+)/; $1 ? $1 : a}
       args_dup[:authors].map!{|a| a =~ /([^ ]+) \S+/; $1 ? $1 : a}
       args_dup[:nwords] = 2

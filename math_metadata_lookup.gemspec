@@ -13,13 +13,13 @@ spec = Gem::Specification.new do |s|
   s.email = "pejuko@gmail.com"
   s.authors = ["Petr Kovar"]
   s.name = 'math_metadata_lookup'
-  s.version = '0.1.1'
+  s.version = '0.1.2'
   s.date = Time.now.strftime("%Y-%m-%d")
   s.add_dependency('i18n', '>= 0.5.0')
   s.add_dependency('unicode')
   s.require_path = 'lib'
   s.files = ["bin/math_metadata_lookup", "README.md", "math_metadata_lookup.gemspec", "TODO", "Rakefile"]
-  s.files += Dir["lib/**/*.rb"]
+  s.files += Dir["lib/**/*.rb", "resources/*"]
   s.executables = ["math_metadata_lookup"]
   s.description = <<EOF
 This utility/library search mathematical reviews sites and fetches metadata about articles.

@@ -1,5 +1,19 @@
 module MathMetadata
 
+  # == Attributes
+  #
+  # * :id [String]
+  # * :similarity [String]
+  # * :publication [String]
+  # * :title [String]
+  # * :authors [Array of Strings]
+  # * :year [String]
+  # * :language [String]
+  # * :msc [Array of Strings]
+  # * :pages [String]
+  # * :issn [Array of Strings]
+  # * :keywords [Array of Strings]
+  # * :references [Array of MathMetadata::Reference]
   class Article < Entity
 
     def ==(article)

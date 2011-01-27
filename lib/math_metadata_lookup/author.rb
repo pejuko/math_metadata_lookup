@@ -1,5 +1,10 @@
 module MathMetadata
 
+  # == Attributes
+  #
+  # * :id [String] an id of the article in the database
+  # * :preferred [String] a preferred form of name in the database
+  # * :forms [Array of Strings] other name forms
   class Author < Entity
 
     def to_text

@@ -3,6 +3,10 @@
 
 module MathMetadata
 
+  # == Attributes
+  #
+  # * :source [String] original string
+  # * :article [MathMetadata::Article] parsed metadata
   class Reference
 
     # 1=authors, 2=title, 3=publication, 4=year, 5=range

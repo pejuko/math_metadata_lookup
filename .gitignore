@@ -1,3 +1,5 @@
 *.gem
 README.html
 html/
+.yardoc/
+yardoc/

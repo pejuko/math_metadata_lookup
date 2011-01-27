@@ -5,14 +5,16 @@
 $KCODE='UTF8'
 
 require 'rake/gempackagetask'
-require 'rake/rdoctask'
 require 'rake/clean'
 
-CLEAN << "coverage" << "pkg" << "README.html" << "CHANGELOG.html" << '*.rbc'
+CLEAN << "coverage" << "pkg" << "README.html" << "CHANGELOG.html" << '*.rbc' << "html/" << "yardoc/"
 
 task :default => [:doc, :gem]
 
 Rake::GemPackageTask.new(eval(File.read("math_metadata_lookup.gemspec"))) {|pkg|}
+
+
+docs = []
 
 begin
   require 'bluecloth'
@@ -28,16 +30,44 @@ begin
     File.open(htmlfile, "w") { |f| f << md.to_html }
   end
 
-  task :doc => [:readme, :rdoc]
 
   task :readme do |t|
     build_document("README.md")
   end
+
+  docs << :readme
+
+rescue LoadError
+end
+
+
+begin
+
+  require 'rake/rdoctask'
 
   Rake::RDocTask.new do |rd|
     rd.main = "README.md"
     rd.rdoc_files.include("README.md", "lib/**/*.rb", "bin/*")
   end
 
+  docs << :rdoc
+
 rescue LoadError
 end
+
+
+begin
+
+  require 'yard'
+
+  YARD::Rake::YardocTask.new do |t|
+    t.files    = ['README.md', 'lib/**/*.rb', 'bin/*']   # optional
+    t.options  = ['--output-dir=yardoc'] # optional
+  end
+
+  docs << :yard
+
+rescue LoadError
+end
+
+task :doc => docs

@@ -38,12 +38,16 @@ Usage from ruby
 
     require 'rubygems'
     require 'math_metadata_lookup'
-
+    
     # initialize search engine to look only to Mathematical Reviews database
-    l = MathMetadata::Lookup.new :sites => [:mrev]
-
-    article = l.article( :title => "Sobolev embeddings with variable exponent. II" ).first
-    p article[:authors] if article
+    l = MathMetadata::Lookup.new( :sites => [:mr], :verbose => false )
+    
+    # fetch result
+    mr_result = l.article( :title => "Sobolev embeddings with variable exponent. II" ).first
+    article = mr_result[:result].first
+    
+    # print out article authors separated with semicolon
+    puts article[:authors].join("; ")
 
 
 Resources

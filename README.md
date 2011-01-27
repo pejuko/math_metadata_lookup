@@ -40,7 +40,7 @@ Usage from ruby
     require 'math_metadata_lookup'
 
     # initialize search engine to look only to Mathematical Reviews database
-    l = MathMetadata:Lookup.new :sites => [:mrev]
+    l = MathMetadata::Lookup.new :sites => [:mrev]
 
     article = l.article( :title => "Sobolev embeddings with variable exponent. II" ).first
     p article[:authors] if article

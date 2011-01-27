@@ -3,7 +3,6 @@
 
 require 'htmlentities'
 require 'open-uri'
-require 'i18n'
 require 'cgi'
 
 

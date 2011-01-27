@@ -2,6 +2,7 @@
 # vi: fenc=utf-8:expandtab:ts=2:sw=2:sts=2
 
 require 'unicode'
+require 'unidecoder'
 
 module MathMetadata
 
@@ -50,7 +51,7 @@ module MathMetadata
     def normalize_name( name )
       # only latin chars
       trans = latex_to_utf8(name.to_s)
-      trans = I18n.transliterate(trans)
+      trans = trans.to_ascii
 
       # remove Jr. 
       trans.sub! %r{\bjr\.(\b|$)}i, ' '
@@ -74,8 +75,8 @@ module MathMetadata
 
 
     def normalize_text( s )
-      str = latex_to_utf8(s)
-      str = I18n.transliterate(str).downcase
+      str = latex_to_utf8(s.to_s)
+      str = str.to_ascii.downcase
       str = remove_punctuation(str)
       str.gsub!(%r{\W+}, ' ')
       str.gsub!(%r{(?:the|a|of|)\s+}i, ' ')

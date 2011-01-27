@@ -47,7 +47,7 @@ def print_help
 
   common options:
     --site, -s <mr,zbl>                      -- repeatable, sites to search on, default: all
-    --format, -f <text|html|xml|ruby|yaml>   -- output format, default: text
+    --format, -f <text|html|xml|ruby|yaml|json>   -- output format, default: text
     --verbose, -v
 
 
@@ -129,6 +129,6 @@ end
 case $options[:format].to_sym
 when :ruby
   pp result
-when :yaml, :html, :xml, :text
+when :yaml, :html, :xml, :text, :json
   puts result.format($options[:format])
 end

@@ -2,6 +2,7 @@
 # vi: fenc=utf-8:expandtab:ts=2:sw=2:sts=2
 
 require 'ya2yaml'
+require 'json'
 
 module MathMetadata
 
@@ -31,7 +32,7 @@ module MathMetadata
   class Result
     include Enumerable
 
-    FORMATS = [:ruby, :yaml, :xml, :html, :text]
+    FORMATS = [:ruby, :yaml, :json, :xml, :html, :text]
 
     def initialize( meta=[] )
       @metadata = meta
@@ -95,6 +96,11 @@ module MathMetadata
 
     def to_yaml
       @metadata.ya2yaml
+    end
+
+
+    def to_json
+      @metadata.to_json
     end
 
 

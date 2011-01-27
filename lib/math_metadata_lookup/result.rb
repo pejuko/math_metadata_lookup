@@ -5,16 +5,29 @@ require 'ya2yaml'
 
 module MathMetadata
 
-  # Example of Result class
+  # == Example of Result class
   #
-  #   l = MathMetadata::Lookup.new()
+  #   # initialize search engine
+  #   l = MathMetadata::Lookup.new(:verbose => false)
+  #
+  #   # result containing articles (l.article, l.heuristic, l.reference)
   #   result = l.article(:title => 'sobolev')
   #   result.each do |site|
   #     next unless site[:result]
   #     site[:result].each do |article|
-  #       puts "#{article[:title]} (#{article[:authors].join('; ')})"
+  #       puts "#{site[:name]}: #{article[:title]} (#{article[:authors].join('; ')})"
   #     end
   #   end
+  #
+  #   # result containing authors (l.author)
+  #   result = l.author(:name => 'Vesely, Jiri')
+  #   result.each do |site|
+  #     next unless site[:result]
+  #     site[:result].each do |author|
+  #       puts "#{site[:name]}: #{author[:preferred]} (#{author[:forms].join('; ')})"
+  #     end
+  #   end
+
   class Result
     include Enumerable
 

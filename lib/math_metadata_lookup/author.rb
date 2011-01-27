@@ -31,12 +31,12 @@ Other: #{form}~
     def to_html
       result = %~
     <div class="author">
-        <div class="author_id">Id: #{::CGI.escapeHTML(@metadata[:id])}</div>
-        <div class="preferred">Preferred: #{::CGI.escapeHTML(@metadata[:preferred].to_s)}</div>~
+        <div class="author_id"><span class="label">Id:</span> <span class="id">#{::CGI.escapeHTML(@metadata[:id])}</span></div>
+        <div class="preferred"><span class="label">Preferred:</span> <span class="name">#{::CGI.escapeHTML(@metadata[:preferred].to_s)}</span></div>~
 
       @metadata[:forms].each do |form|
           result += %~
-        <div class="other">Other: #{::CGI.escapeHTML(form.to_s)}</div>~
+        <div class="other"><span class="label">Other:</span> <span class="name">#{::CGI.escapeHTML(form.to_s)}</span></div>~
       end
 
       result += %~

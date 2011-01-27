@@ -111,35 +111,41 @@ Ref.: #{idx+1}. #{[a[:authors]].flatten.join("; ")}: #{a[:title]}~
     def to_html
       result = %~
     <div class="article">
-        Id: <span class="id">#{::CGI.escapeHTML @metadata[:id].to_s}</span><br />
-        Publication: <span class="publication">#{::CGI.escapeHTML @metadata[:publication].to_s}</span><br />
-        Title: <span class="title">#{::CGI.escapeHTML @metadata[:title].to_s}</span><br />
-        Authors: <span class="authors">#{::CGI.escapeHTML @metadata[:authors].to_a.join("; ")}</span><br />
-        Year: <span class="year">#{::CGI.escapeHTML @metadata[:year].to_s}</span><br />
-        Language: <span class="lang">#{::CGI.escapeHTML @metadata[:language].to_s}</span><br />
-        MSC: <span class="msc">#{::CGI.escapeHTML @metadata[:msc].to_a.join("; ")}</span><br />
-        Pages: <span class="pages">#{::CGI.escapeHTML @metadata[:range].to_s}</span><br />
-        ISSN: <span class="issn">#{::CGI.escapeHTML @metadata[:issn].to_a.join('; ')}</span><br />
-        Keywords: <span class="keywords">#{::CGI.escapeHTML @metadata[:keywords].to_a.join('; ')}</span><br />
-        <a href="javascript:toggle_references('ref#{@metadata[:id]}')">References >>></a>
-        <div id="ref#{@metadata[:id]}" name="ref#{@metadata[:id]}"class="references">
+        <span class="label">Id:</span> <span class="id">#{::CGI.escapeHTML @metadata[:id].to_s}</span><br />
+        <span class="label">Publication:</span> <span class="publication">#{::CGI.escapeHTML @metadata[:publication].to_s}</span><br />
+        <span class="label">Title:</span> <span class="title">#{::CGI.escapeHTML @metadata[:title].to_s}</span><br />
+        <span class="label">Authors:</span> <span class="authors">#{::CGI.escapeHTML @metadata[:authors].to_a.join("; ")}</span><br />
+        <span class="label">Year:</span> <span class="year">#{::CGI.escapeHTML @metadata[:year].to_s}</span><br />
+        <span class="label">Language:</span> <span class="lang">#{::CGI.escapeHTML @metadata[:language].to_s}</span><br />
+        <span class="label">MSC:</span> <span class="msc">#{::CGI.escapeHTML @metadata[:msc].to_a.join("; ")}</span><br />
+        <span class="label">Pages:</span> <span class="pages">#{::CGI.escapeHTML @metadata[:range].to_s}</span><br />
+        <span class="label">ISSN:</span> <span class="issn">#{::CGI.escapeHTML @metadata[:issn].to_a.join('; ')}</span><br />
+        <span class="label">Keywords:</span> <span class="keywords">#{::CGI.escapeHTML @metadata[:keywords].to_a.join('; ')}</span><br />
 ~
-      @metadata[:references].to_a.each_with_index do |reference, idx|
-        ref = reference.article
+      if @metadata[:references].to_a.size > 0
         result += %~
+        <a href="javascript:toggle_references('ref#{@metadata[:id]}')">References >>></a>
+        <div id="ref#{@metadata[:id]}" name="ref#{@metadata[:id]}" class="references">
+~
+        @metadata[:references].to_a.each_with_index do |reference, idx|
+          ref = reference.article
+          result += %~
             <div class="reference">
-                Source: #{::CGI.escapeHTML reference.source.to_s}
-                Authors: #{::CGI.escapeHTML [ref[:authors]].flatten.join("; ")}
-                Title: #{::CGI.escapeHTML ref[:title].to_s}
-                Publication: #{::CGI.escapeHTML ref[:publication].to_s}
-                Publisher: #{::CGI.escapeHTML ref[:publisher].to_s}
-                Year: #{::CGI.escapeHTML ref[:year].to_s}
-                Id: #{::CGI.escapeHTML ref[:id].to_s}
+                <span class="label">Source:</span> <span class="source">#{::CGI.escapeHTML reference.source.to_s}</span><br />
+                <span class="label">Authors:</span> <span class="authors">#{::CGI.escapeHTML [ref[:authors]].flatten.join("; ")}</span><br />
+                <span class="label">Title:</span> <span class="title">#{::CGI.escapeHTML ref[:title].to_s}</span><br />
+                <span class="label">Publication:</span> <span class="publication">#{::CGI.escapeHTML ref[:publication].to_s}</span><br />
+                <span class="label">Publisher:</span> <span class="publisher">#{::CGI.escapeHTML ref[:publisher].to_s}</span><br />
+                <span class="label">Year:</span> <span class="year">#{::CGI.escapeHTML ref[:year].to_s}</span><br />
+                <span class="label">Id:</span> <span class="id">#{::CGI.escapeHTML ref[:id].to_s}</span><br />
             </div>
+~
+        end
+        result += %~
+          </div>
 ~
       end
       result += %~
-        </div>
     </div>
 ~
       result

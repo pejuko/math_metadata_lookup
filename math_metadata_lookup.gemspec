@@ -13,7 +13,7 @@ spec = Gem::Specification.new do |s|
   s.email = "pejuko@gmail.com"
   s.authors = ["Petr Kovar"]
   s.name = 'math_metadata_lookup'
-  s.version = '0.1.3'
+  s.version = '0.1.4'
   s.date = Time.now.strftime("%Y-%m-%d")
   s.add_dependency('unicode')
   s.add_dependency('unidecoder')

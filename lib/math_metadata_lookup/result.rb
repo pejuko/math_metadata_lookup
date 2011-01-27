@@ -5,6 +5,16 @@ require 'ya2yaml'
 
 module MathMetadata
 
+  # Example of Result class
+  #
+  #   l = MathMetadata::Lookup.new()
+  #   result = l.article(:title => 'sobolev')
+  #   result.each do |site|
+  #     next unless site[:result]
+  #     site[:result].each do |article|
+  #       puts "#{article[:title]} (#{article[:authors].join('; ')})"
+  #     end
+  #   end
   class Result
     include Enumerable
 

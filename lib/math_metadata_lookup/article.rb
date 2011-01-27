@@ -58,25 +58,25 @@ Ref.: #{idx+1}. #{[a[:authors]].flatten.join("; ")}: #{a[:title]}~
             <authors>~
       @metadata[:authors].to_a.each do |author|
         result += %~
-                <author>#{::CGI.escapeHTML author}</author>~
+                <author>#{::CGI.escapeHTML author.to_s}</author>~
       end
       result += %~
             </authors>
             <msc>~
       @metadata[:msc].to_a.each do |msc|
         result += %~
-                <class>#{::CGI.escapeHTML msc}</class>~
+                <class>#{::CGI.escapeHTML msc.to_s}</class>~
       end
       result += %~
             </msc>
             <pages>#{::CGI.escapeHTML @metadata[:range].to_s}</pages>~
         @metadata[:issn].to_a.each do |issn|
           result += %~
-            <issn>#{::CGI.escapeHTML issn}</issn>~
+            <issn>#{::CGI.escapeHTML issn.to_s}</issn>~
         end
         @metadata[:keywords].to_a.each do |keyword|
           result += %~
-            <keyword>#{::CGI.escapeHTML keyword}</keyword>~
+            <keyword>#{::CGI.escapeHTML keyword.to_s}</keyword>~
         end
         result += %~
             <references>
@@ -85,11 +85,11 @@ Ref.: #{idx+1}. #{[a[:authors]].flatten.join("; ")}: #{a[:title]}~
         ref = reference.article
         result += %~
                 <reference id="#{::CGI.escapeHTML ref[:id].to_s}" number="#{::CGI.escapeHTML(ref[:number].to_s || (idx+1).to_s)}">
-                    <source>#{::CGI.escapeHTML reference.source}</source>
+                    <source>#{::CGI.escapeHTML reference.source.to_s}</source>
                     <authors>~
         [ref[:authors]].flatten.each do |author|
           result += %~
-                        <author>#{::CGI.escapeHTML author}</author>~
+                        <author>#{::CGI.escapeHTML author.to_s}</author>~
         end
         result += %~
                     </authors>
@@ -128,13 +128,13 @@ Ref.: #{idx+1}. #{[a[:authors]].flatten.join("; ")}: #{a[:title]}~
         ref = reference.article
         result += %~
             <div class="reference">
-                Source: #{reference.source}
-                Authors: #{[ref[:authors]].flatten.join("; ")}
-                Title: #{ref[:title]}
-                Publication: #{ref[:publication]}
-                Publisher: #{ref[:publisher]}
-                Year: #{ref[:year]}
-                Id: #{ref[:id]}
+                Source: #{::CGI.escapeHTML reference.source.to_s}
+                Authors: #{::CGI.escapeHTML [ref[:authors]].flatten.join("; ")}
+                Title: #{::CGI.escapeHTML ref[:title].to_s}
+                Publication: #{::CGI.escapeHTML ref[:publication].to_s}
+                Publisher: #{::CGI.escapeHTML ref[:publisher].to_s}
+                Year: #{::CGI.escapeHTML ref[:year].to_s}
+                Id: #{::CGI.escapeHTML ref[:id].to_s}
             </div>
 ~
       end

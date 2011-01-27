@@ -66,11 +66,11 @@ Function reference
 Hash arguments are:
 
 * article id is known
-  * **:id**
+  * **:id** String
 * article id is unknown 
   * **:title** String
-  * **:authors** Array of strings
-  * **:year**
+  * **:authors** Array of Strings
+  * **:year** String
 
 Returns instance of class Result.
 
@@ -97,7 +97,7 @@ The Levenshtein distance function is run on full given title and full given name
 Hash arguments are:
 
 * **:title**   String
-* **:author**  Array of strings
+* **:author**  Array of Strings
 * **:year**    String
 * **:threshold** Float. Range: 0.0...1.0. Default: 0.6
 

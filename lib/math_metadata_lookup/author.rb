@@ -16,10 +16,10 @@ Other: #{form}~
     def to_xml
       result = %~
         <author id="#{::CGI.escapeHTML(@metadata[:id])}">
-            <name form="preferred">#{::CGI.escapeHTML(@metadata[:preferred])}</name>~
+            <name form="preferred">#{::CGI.escapeHTML(@metadata[:preferred].to_s)}</name>~
       @metadata[:forms].each do |form|
           result += %~
-            <name form="other">#{::CGI.escapeHTML(form)}</name>~
+            <name form="other">#{::CGI.escapeHTML(form.to_s)}</name>~
       end
       result += %~
         </author>
@@ -32,11 +32,11 @@ Other: #{form}~
       result = %~
     <div class="author">
         <div class="author_id">Id: #{::CGI.escapeHTML(@metadata[:id])}</div>
-        <div class="preferred">Preferred: #{::CGI.escapeHTML(@metadata[:preferred])}</div>~
+        <div class="preferred">Preferred: #{::CGI.escapeHTML(@metadata[:preferred].to_s)}</div>~
 
       @metadata[:forms].each do |form|
           result += %~
-        <div class="other">Other: #{::CGI.escapeHTML(form)}</div>~
+        <div class="other">Other: #{::CGI.escapeHTML(form.to_s)}</div>~
       end
 
       result += %~

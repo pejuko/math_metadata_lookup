@@ -39,7 +39,7 @@ def print_help
     --threshold, -d <0.0...1.0> -- default: 0.6
 
 
-  reference -- parse reference string and run heuristic
+  reference -- parse reference string and run heuristic; it expects that authors are separated by colon
 
     --reference, -r <string with reference>  -- parse the string to get title, authors and year
     --threshold, -d <0.0...1.0>              -- default: 0.6

@@ -18,7 +18,7 @@ then you can install ``math_metadata_lookup`` using rubygems:
 Command line usage example
 --------------------------
 
-To get full help run it without any argument
+To get full help run it without any argument:
 
     math_metadata_lookup
 
@@ -26,7 +26,7 @@ Fetching metadata about an article:
 
     math_metadata_lookup.rb article -t "Sobolev embeddings with variable exponent. II"
 
-Returns list of articles:
+Returns list of articles as html:
     bin/math_metadata_lookup.rb article -t "Sobolev embeddings" -a "Rakosnik, Jiri" -a "Edmunds, David" -f html
 
 Searching for authors:
@@ -42,8 +42,10 @@ Usage from ruby
     # initialize search engine to look only to Mathematical Reviews database
     l = MathMetadata::Lookup.new( :sites => [:mr], :verbose => false )
     
-    # fetch result
+    # fetch first site from search result
     mr_result = l.article( :title => "Sobolev embeddings with variable exponent. II" ).first
+
+    # get first article from the :mr site
     article = mr_result[:result].first
     
     # print out article authors separated with semicolon
@@ -66,11 +68,12 @@ Function reference
 Hash arguments are:
 
 * article id is known
-  * **:id** String
+  * **:id**      String
+
 * article id is unknown 
-  * **:title** String
+  * **:title**   String
   * **:authors** Array of Strings
-  * **:year** String
+  * **:year**    String
 
 Returns instance of class Result.
 
@@ -89,16 +92,16 @@ Returns instance of class Result.
 #Lookup#heuristic( hash )
 
 Returns only one best match from each site where similarity is higher then threshold.
-It runs article searh with first two words from title and only surnames from author names.
+It runs article search with first two words from title and only surnames from author names.
 The result of search is sorted by similarity and articles with similarity less then threshold are deleted.
 Similarity is count as weighted average from title, authors and year using Levenshtein distance method.
 The Levenshtein distance function is run on full given title and full given names.
 
 Hash arguments are:
 
-* **:title**   String
-* **:author**  Array of Strings
-* **:year**    String
+* **:title**     String
+* **:authors**   Array of Strings
+* **:year**      String
 * **:threshold** Float. Range: 0.0...1.0. Default: 0.6
 
 Returns instance of class Result.
@@ -106,7 +109,7 @@ Returns instance of class Result.
 
 #Lookup#reference( hash )
 
-Parse reference string and run heuristic.
+Parse reference string and run heuristic. It expects that authors are separated by colon.
 
 Hash arguments are:
 

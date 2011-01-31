@@ -3,3 +3,4 @@ README.html
 html/
 .yardoc/
 yardoc/
+*.class

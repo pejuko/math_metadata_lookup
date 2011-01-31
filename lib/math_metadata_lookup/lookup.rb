@@ -36,7 +36,7 @@ module MathMetadata
     end
 
 
-    # try to decide what is best result for query and combine results from all sites to one article response
+    # returns best result for each site
     def heuristic( args={} )
       opts = {:threshold => 0.6, :authors => []}.merge(args)
       result = Result.new

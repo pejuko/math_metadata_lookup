@@ -46,7 +46,7 @@ def print_help
 
 
   common options:
-    --site, -s <mr,zbl>                      -- repeatable, sites to search on, default: all
+    --site, -s <mr,zbl,dmlcz>                     -- repeatable, sites to search on, default: all
     --format, -f <text|html|xml|ruby|yaml|json>   -- output format, default: text
     --verbose, -v
 

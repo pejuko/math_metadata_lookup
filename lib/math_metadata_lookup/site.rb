@@ -112,6 +112,7 @@ module MathMetadata
     def author_name_forms( name )
       forms = []
 
+      return forms if self.class::AUTHOR_URL.empty?
       page = fetch_author name
       forms = get_author_m page, 2, 1
 

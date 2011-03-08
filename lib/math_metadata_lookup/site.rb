@@ -11,7 +11,7 @@ module MathMetadata
   SITES = []
 
   # Abstract class. Inherit in your sites definition.
-  class Site 
+  class Site
 
     def initialize( opts={} )
       @options = { :verbose => true }.merge(opts)
@@ -146,6 +146,7 @@ module MathMetadata
     def get_article( page, opts={} )
       a = Article.new( {
         :id => get_article_id(page),
+        :language => get_article_language(page),
         :authors => get_article_author_s(page),
         :msc => get_article_msc(page),
         :publication => get_article_publication(page),
@@ -155,7 +156,7 @@ module MathMetadata
         :issn => get_article_issn_s(page)
       } )
 
-      a.title, a.language = get_article_title(page, 2)
+      a.title = get_article_title(page)
       a.title = a.title.to_s.gsub(/<\/span>/,'')
       a.references = get_article_references(page) if opts[:references]
 

@@ -26,7 +26,8 @@ module MathMetadata
     ARTICLE_ENTRY_RE = %r{<span[^>]*?>\s*<a href="\?q=an:([^\&]+)\&format=complete">[^<]+</a>\s*<b>}mi
 
     ARTICLE_ID_RE = %r{<a href="\?q=an:.*?complete">(.*?)</a>}mi
-    ARTICLE_TITLE_RE = %r{</a><br>(.*?)\.</b>\s*\((.*?)\)<br>}mi
+    ARTICLE_TITLE_RE = %r{</a><br>(.*?)\.</b>\s*\(.*?\)<br>}mi
+    ARTICLE_LANGUAGE_RE = %r{</a><br>.*?\.</b>\s*\((.*?)\)<br>}mi
     ARTICLE_AUTHORS_RE = %r{<br><b>(<a href="\?q=[^"]*">.*?</a>)<br>}mi
     ARTICLE_AUTHOR_RE = %r{<a href="\?q=[^"]*">(.*?)</a>}mi
     ARTICLE_MSCS_RE = %r{<dd>(.*?)</dd>}mi

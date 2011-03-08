@@ -28,6 +28,7 @@ module MathMetadata
 
     ARTICLE_ID_RE = %r{<meta\s*name="citation_id"\s*content="(\d+)"\s*/>}mi
     ARTICLE_TITLE_RE = %r{<meta\s*name="dc.Title"\s*content="([^"]+)"\s*/>}mi
+    ARTICLE_LANGUAGE_RE = %r{<meta\s*name="citation_language"\s*content="([^"]+)"\s*/>}mi
     ARTICLE_AUTHORS_RE = %r{<meta\s*name="citation_authors"\s*content="([^"]+)" />}mi
     ARTICLE_AUTHOR_RE = %r{([^;]+);?\s*}mi
     ARTICLE_MSCS_RE = %r{<table\s*xmlns:fn="http://www.w3.org/2003/11/xpath-functions"\s*class="dml_detail_view">(.*?)</table>}mi

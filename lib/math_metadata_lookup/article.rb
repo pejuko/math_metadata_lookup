@@ -53,7 +53,8 @@ Language: #{@metadata[:language]}
 MSC: #{[@metadata[:msc]].flatten.join("; ")}
 Pages: #{@metadata[:range]}
 ISSN: #{@metadata[:issn].join('; ')}
-Keywords: #{@metadata[:keywords].join('; ')}~
+Keywords: #{@metadata[:keywords].join('; ')}
+Publisher: #{@metadata[:publisher]}~
       @metadata[:references].to_a.each_with_index do |ref, idx|
         a = ref.article
         result += %~
@@ -93,6 +94,7 @@ Ref.: #{idx+1}. #{[a[:authors]].flatten.join("; ")}: #{a[:title]}~
             <keyword>#{::CGI.escapeHTML keyword.to_s}</keyword>~
         end
         result += %~
+            <publisher>#{::CGI.escapeHTML @metadata[:publisher].to_s}</publisher>
             <references>
 ~
       @metadata[:references].to_a.each_with_index do |reference, idx|
@@ -135,6 +137,7 @@ Ref.: #{idx+1}. #{[a[:authors]].flatten.join("; ")}: #{a[:title]}~
         <span class="label">Pages:</span> <span class="pages">#{::CGI.escapeHTML @metadata[:range].to_s}</span><br />
         <span class="label">ISSN:</span> <span class="issn">#{::CGI.escapeHTML @metadata[:issn].to_a.join('; ')}</span><br />
         <span class="label">Keywords:</span> <span class="keywords">#{::CGI.escapeHTML @metadata[:keywords].to_a.join('; ')}</span><br />
+        <span class="label">Publisher:</span> <span class="publisher">#{::CGI.escapeHTML @metadata[:publisher].to_s}</span><br />
 ~
       if @metadata[:references].to_a.size > 0
         result += %~

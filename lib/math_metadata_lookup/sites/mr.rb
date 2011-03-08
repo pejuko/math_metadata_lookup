@@ -34,6 +34,7 @@ module MathMetadata
     ARTICLE_MSCS_RE = %r{<a href="/mathscinet/search/mscdoc.html\?code=[^"]*">(.*?)</a>}mi
     ARTICLE_MSC_RE = %r{([^, ]+)}mi
     ARTICLE_PUBLICATION_RE = %r{<a href="/mathscinet/search/journaldoc\.html\?cn=[^"]*">\s*<em>(.*?)</em>\s*</a>}mi
+    ARTICLE_PUBLISHER_RE = %r{xxxxxxxxxxxxxxxxxx}mi
     ARTICLE_RANGE_RE = %r{(\d+–\d+)}mi
     ARTICLE_YEAR_RE = %r{<a href="/mathscinet/search/publications\.html[^"]*">\s*\(?(\d{4})\)?, </a>}mi
     ARTICLE_ISSNS_RE = %r{(ISSN.*?)<br>}mi

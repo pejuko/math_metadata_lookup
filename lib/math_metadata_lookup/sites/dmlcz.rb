@@ -34,6 +34,7 @@ module MathMetadata
     ARTICLE_MSCS_RE = %r{<table\s*xmlns:fn="http://www.w3.org/2003/11/xpath-functions"\s*class="dml_detail_view">(.*?)</table>}mi
     ARTICLE_MSC_RE = %r{<tr>\s*<td\s*class="label">\s*MSC:\s*</td>\s*<td\s*class="value">\s*([^< ]+)\s*</td>\s*</tr>}mi
     ARTICLE_PUBLICATION_RE = %r{<meta\s*name="citation_journal_title"\s*content="([^"]+)"\s*/>}mi
+    ARTICLE_PUBLISHER_RE = %r{<meta\s*name="citation_publisher"\s*content="([^"]+)"\s*/>}mi
     ARTICLE_RANGE_RE = %r{<tr>\s*<td class="label">\s*Pages:\s*</td>\s*<td\s*class="value">([^ <]+)</td>\s*</tr>}mi
     ARTICLE_YEAR_RE = %r{<meta\s*name="citation_year"\s*content="([^"]+)"\s*/>}mi
     ARTICLE_ISSNS_RE = %r{<head>(.*?)</head>}mi

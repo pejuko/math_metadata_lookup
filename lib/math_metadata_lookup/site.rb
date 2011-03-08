@@ -150,6 +150,7 @@ module MathMetadata
         :authors => get_article_author_s(page),
         :msc => get_article_msc(page),
         :publication => get_article_publication(page),
+        :publisher => get_article_publisher(page),
         :range => MathMetadata.normalize_range(get_article_range(page)),
         :year => get_article_year(page),
         :keywords => get_article_keyword_s(page),

@@ -24,7 +24,7 @@ module MathMetadata
     ARTICLE_URL = "http://dml.cz/advanced-search?num_search_field=10&results_per_page=100&scope=%%2F&field1=title&query1=%s&%s&conjunction2=AND&field2=year&query2=%s&submit=Go"
     ARTICLE_URL = "http://www.numdam.org/numdam-bin/search?bibitems.au_op=and&bibitems.text_op=and&ti=%s&au=%s&ti_op=and&Index1.y=0&Index1.x=0&bibitems.ti_op=and&au_op=and&py1=%s"
 
-    LIST_OF_ARTICLES_RE = %r{<P>\s*<DIV\s+align="center">\s*</DIV>\s*</P>\s*(.*?)\s*<P>\s*<DIV\s+align="center">\s*</DIV>\s*</P>}mi
+    LIST_OF_ARTICLES_RE = %r{<P>\s*<DIV\s+align="center">.*?</DIV>\s*</P>\s*(.*?)\s*<P>\s*<DIV\s+align="center">.*?</DIV>\s*</P>}mi
     ARTICLE_ENTRY_RE = %r{<a href="http://www.numdam.org:80/numdam-bin/item\?id=([^"]+)">Full entry</a>}mi
 
     ARTICLE_ID_RE = %r{<P>stable URL: http://www.numdam.org/item\?id=([^<]+)</P>}mi

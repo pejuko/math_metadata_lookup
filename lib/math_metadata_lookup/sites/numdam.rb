@@ -1,6 +1,8 @@
 # -*-: coding: utf-8 -*-
 # vi: fenc=utf-8:expandtab:ts=2:sw=2:sts=2
 
+require 'rexml/document'
+
 module MathMetadata
 
   # NUMDAM
@@ -40,8 +42,51 @@ module MathMetadata
     ARTICLE_ISSN_RE = %r{xxxxxxxxxxxxxxxxx}mi
     ARTICLE_KEYWORDS_RE = %r{xxxxxxxxxxxxxxxxx}mi
     ARTICLE_KEYWORD_RE = %r{xxxxxxxxxxxxxxxxx}mi
-    ARTICLE_REFERENCES_RE = %r{xxxxxxxxxxxxxxxxx}mi
-    ARTICLE_REFERENCE_RE = %r{xxxxxxxxxxxxxxx}mi
+    ARTICLE_REFERENCES_RE = %r{<P>\s*<B>\s*Bibliography\s*</B>\s*</P>\s*</DIV>\s*(.*?)\s*</td>}mi
+    ARTICLE_REFERENCE_RE = %r{\[\d+\](.*?)<BR>}mi
+
+    def get_article_references( page )
+      references = []
+
+      refs = get_article_reference_s page
+
+      i = 0;
+      refs.each do |r|
+        i+=1
+        ref = Reference.new nil, i
+        ref.source = r.gsub(/  +/,' ')
+        ref.article = Article.new
+
+        r =~ %r{<span class="atitle">(.*?)</span>}im
+        ref.article.title = $1.to_s.strip
+
+        ref.article.authors = []
+        r.split(%r{<span class="bauteur">\s?(.*?)\s*</span>}).each do |a|
+          next if a.strip.empty? or a.strip == "-" or a.strip[0,1] == ','
+          author = a.gsub /<.*?>/, ''
+          ref.article.authors << author
+        end
+
+        r =~ %r{<span class="brevue">(.*?)</span>}mi
+        ref.article.publication = $1.strip if $1
+
+        r =~ %r{<bediteur>(.*?)</bediteur>}mi
+        ref.article.publisher = $1.strip if $1
+
+        r =~ %r{<blieued>(.*?)</blieued>}mi
+        ref.article.place = $1.strip if $1
+
+        r =~ %r{<bannee>(.*?)</bannee>}mi
+        ref.article.year = $1.strip if $1
+
+        r =~ %r{<bpagedeb>(\d+)</bpagedeb>-<bpagefin>(\d+)</bpagefin>}mi
+        ref.article.range = "#{$1.strip}-#{$2.strip}" if $1
+
+        references << ref
+      end
+
+      references
+    end
 
   end # MRev
 

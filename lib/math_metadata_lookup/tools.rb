@@ -44,7 +44,7 @@ module MathMetadata
 
 
     def normalize_mscs( mscs )
-      mscs.map{|m| m.split(/,|;/) }.flatten.map{|m| m =~ /\s*\(?([^\s\)\(]+)\)?\s*/; $1}
+      mscs.map{|m| m.split(/,|;/) }.flatten.map{|m| m.gsub(/<.*?>/,'')}.map{|m| m =~ /\s*\(?([^\s\)\(]+)\)?\s*/; $1}
     end
 
 

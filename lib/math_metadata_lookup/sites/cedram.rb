@@ -7,10 +7,10 @@ module MathMetadata
 
   # NUMDAM
   # http://numdam.org/
-  class NUMDAM< Site
-    ID = :numdam
-    NAME = "NUMDAM"
-    URL = "http://numdam.org/"
+  class CEDRAM < Site
+    ID = :cedram
+    NAME = "CEDRAM"
+    URL = "http://cedram.org/"
 
 
     # AUTHOR_URL % "Author, Name"
@@ -20,29 +20,34 @@ module MathMetadata
     AUTHOR_RE = %r{}mi
 
 
-    ARTICLE_ID_URL = "http://www.numdam.org/numdam-bin/item?id=%s"
-    ARTICLE_URL = "http://www.numdam.org/numdam-bin/search?bibitems.au_op=and&bibitems.text_op=and&ti=%s&au=%s&ti_op=and&Index1.y=0&Index1.x=0&bibitems.ti_op=and&au_op=and&py1=%s"
+    ARTICLE_ID_URL = "http://aif.cedram.org/aif-bin/item?id=%s"
+    ARTICLE_URL = "http://www.cedram.org:80/cedram-bin/search?ti=%s&au=%s&py1=%s"
 
-    LIST_OF_ARTICLES_RE = %r{<P>\s*<DIV\s+align="center">.*?</DIV>\s*</P>\s*(.*?)\s*<P>\s*<DIV\s+align="center">.*?</DIV>\s*</P>}mi
-    ARTICLE_ENTRY_RE = %r{<a href="http://www.numdam.org:80/numdam-bin/item\?id=([^"]+)">Full entry</a>}mi
-
-    ARTICLE_ID_RE = %r{<P>stable URL: http://www.numdam.org/item\?id=([^<]+)</P>}mi
-    ARTICLE_TITLE_RE = %r{<SPAN class="atitle">(.*?)</SPAN>}mi
+    LIST_OF_ARTICLES_RE = %r{matches(.*?)</td>}mi
+    ARTICLE_ENTRY_RE = %r{<a href="http://aif.cedram.org/aif-bin/item\?id=([^"]+)">Details</a>}mi
+    ARTICLE_ID_RE = %r{<input type="hidden" name="id" value="([^"]+)" />}mi
+    ARTICLE_TITLE_RE = %r{<span class="atitle">(.*?)</span>}mi
     ARTICLE_LANGUAGE_RE = %r{xxxxxxxxxxxxxxx}mi
     ARTICLE_AUTHORS_RE = %r{<head>\s*(.*?)\s*</head>}mi
     ARTICLE_AUTHOR_RE = %r{<meta content="([^"]+)" name="DC.creator">}mi
-    ARTICLE_MSCS_RE = %r{xxxxxxxxxxxxxxxxx}mi
-    ARTICLE_MSC_RE = %r{xxxxxxxxxxxxxxx}mi
-    ARTICLE_PUBLICATION_RE = %r{<SPAN class="jtitle">(.*?)</SPAN>}mi
+    ARTICLE_MSCS_RE = %r{Class. Math.:(.*?)<br}mi
+    ARTICLE_MSC_RE = %r{([^,]+),?\s*}mi
+    ARTICLE_PUBLICATION_RE = %r{(<span class="jtitle">.*?</span>,\s*<a href="http://aif.cedram.org:80/aif-bin/get\?id=[^"]+">\d+</a>\s*no\.\s*<a href="http://aif.cedram.org:80/aif-bin/browse\?id=[^"]+">\d+</a>\s*\(<a href="http://aif.cedram.org:80/aif-bin/get\?id=[^"]+">\d+</a>\))}mi
     ARTICLE_PUBLISHER_RE = %r{xxxxxxxxxxxxxxxxx}mi
-    ARTICLE_RANGE_RE = %r{(\d+\-\d+)\s*<BR>\s*Full text}mi
-    ARTICLE_YEAR_RE = %r{py=(\d+)}mi
+    ARTICLE_RANGE_RE = %r{(\d+\-\d+)\s*<br\s*/>\s*Article}mi
+    ARTICLE_YEAR_RE = %r{<span class="jtitle">.*?</span>,\s*<a href="http://aif.cedram.org:80/aif-bin/get\?id=[^"]+">\d+</a>\s*no\.\s*<a href="http://aif.cedram.org:80/aif-bin/browse\?id=[^"]+">\d+</a>\s*\(<a href="http://aif.cedram.org:80/aif-bin/get\?id=[^"]+">(\d+)</a>\)}mi
     ARTICLE_ISSNS_RE = %r{xxxxxxxxxxxxxxxxx}mi
     ARTICLE_ISSN_RE = %r{xxxxxxxxxxxxxxxxx}mi
-    ARTICLE_KEYWORDS_RE = %r{xxxxxxxxxxxxxxxxx}mi
-    ARTICLE_KEYWORD_RE = %r{xxxxxxxxxxxxxxxxx}mi
+    ARTICLE_KEYWORDS_RE = %r{Keywords:(.*?)<div}mi
+    ARTICLE_KEYWORD_RE = %r{([^,]+),?\s*}mi
     ARTICLE_REFERENCES_RE = %r{<P>\s*<B>\s*Bibliography\s*</B>\s*</P>\s*</DIV>\s*(.*?)\s*</td>}mi
     ARTICLE_REFERENCE_RE = %r{\[\d+\](.*?)<BR>}mi
+
+    def get_article_publication( page )
+      page =~ ARTICLE_PUBLICATION_RE
+      return nil unless $1
+      $1.gsub(/<.*?>/, '')
+    end
 
     def get_article_references( page )
       references = []

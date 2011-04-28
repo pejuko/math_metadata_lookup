@@ -185,6 +185,14 @@ module MathMetadata
   
       puts "fetching #{url}" if @options[:verbose]
       page = URI.parse(url).read
+      if page =~ %r{<meta.*charset=([^"\s]+)}i
+        if page.respond_to?(:force_encoding)
+          page.force_encoding($1)
+          page.encode!("utf-8")
+        else
+          page = Iconv.new('utf-8', $1).iconv(page)
+        end
+      end
       page = HTMLEntities.decode_entities(page) if page and opts[:entities]
     
       page

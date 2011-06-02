@@ -47,7 +47,11 @@ module MathMetadata
     end
 
 
-    def self.parse( str )
+    def self.parse( ref_str )
+      str = ref_str.dup
+      if ref_str =~ %r~\s*[\[\(\{\/\\].*?[\]\)\}\/\\][:\.]?\s*(.*)~mi
+        str = $1
+      end
       article = Article.new
       rnumber = 0
       suffix = nil

@@ -7,7 +7,7 @@ module MathMetadata
 
   # NUMDAM
   # http://numdam.org/
-  class NUMDAM< Site
+  class NUMDAM < Site
     ID = :numdam
     NAME = "NUMDAM"
     URL = "http://numdam.org/"

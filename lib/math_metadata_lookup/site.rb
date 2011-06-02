@@ -211,7 +211,7 @@ module MathMetadata
   
 
     def join_article_authors( authors )
-      authors.collect { |author| URI.escape MathMetadata.normalize_name(author) }.join('; ') || ''
+      authors.collect { |author| URI.escape MathMetadata.normalize_name(author) }.join(';%20') || ''
     end
   
     def fetch_article( args={} )

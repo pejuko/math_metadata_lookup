@@ -193,7 +193,10 @@ module MathMetadata
           page = Iconv.new('utf-8', $1).iconv(page)
         end
       end
-      page = HTMLEntities.decode_entities(page) if page and opts[:entities]
+      if page and opts[:entities]
+        coder = HTMLEntities.new
+        page = coder.decode(page)
+      end
     
       page
     end

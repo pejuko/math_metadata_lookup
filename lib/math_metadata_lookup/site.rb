@@ -180,11 +180,9 @@ module MathMetadata
     end
 
 
-    def fetch_page( url, args={} )
+    def normalize_page(page, args={})
       opts = {:entities => true}.merge(args)
-  
-      puts "fetching #{url}" if @options[:verbose]
-      page = URI.parse(url).read
+
       if page =~ %r{<meta.*charset=([^"\s]+)}i
         if page.respond_to?(:force_encoding)
           page.force_encoding($1)
@@ -197,6 +195,14 @@ module MathMetadata
         coder = HTMLEntities.new
         page = coder.decode(page)
       end
+
+    end
+
+
+    def fetch_page( url, args={} )
+      puts "fetching #{url}" if @options[:verbose]
+      page = URI.parse(url).read
+      page = normalize_page page, args
     
       page
     end

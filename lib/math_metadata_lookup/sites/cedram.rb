@@ -21,16 +21,17 @@ module MathMetadata
 
 
     ARTICLE_ID_URL = "http://aif.cedram.org/aif-bin/item?id=%s"
+    ARTICLE_ID_AFST_URL = "http://afst.cedram.org/afst-bin/item?id=%s"
     ARTICLE_URL = "http://www.cedram.org/cedram-bin/search?ti=%s&au=%s&py1=%s&lang=en"
 #    ARTICLE_URL = "http://www.cedram.org/cedram-bin/search"
 
     LIST_OF_ARTICLES_RE = %r{matches(.*?)</td>}mi
-    ARTICLE_ENTRY_RE = %r{<a href="http://aif.cedram.org/aif-bin/item\?id=([^"]+)">Details</a>}mi
+    ARTICLE_ENTRY_RE = %r{<a href=".*?id=([^"]+)">Details</a>}mi
     ARTICLE_ID_RE = %r{<input type="hidden" name="id" value="([^"]+)" />}mi
     ARTICLE_TITLE_RE = %r{<span class="atitle">(.*?)</span>}mi
     ARTICLE_LANGUAGE_RE = %r{xxxxxxxxxxxxxxx}mi
-    ARTICLE_AUTHORS_RE = %r{<head>\s*(.*?)\s*</head>}mi
-    ARTICLE_AUTHOR_RE = %r{<meta content="([^"]+)" name="DC.creator">}mi
+    ARTICLE_AUTHORS_RE = %r{<hr />(<a.*?)<br />}mi
+    ARTICLE_AUTHOR_RE = %r{<a.*?>(.*?)</a>}mi
     ARTICLE_MSCS_RE = %r{Class. Math.:(.*?)<br}mi
     ARTICLE_MSC_RE = %r{([^,]+),?\s*}mi
     ARTICLE_PUBLICATION_RE = %r{(<span class="jtitle">.*?</span>,\s*<a href="http://aif.cedram.org:80/aif-bin/get\?id=[^"]+">\d+</a>\s*no\.\s*<a href="http://aif.cedram.org:80/aif-bin/browse\?id=[^"]+">\d+</a>\s*\(<a href="http://aif.cedram.org:80/aif-bin/get\?id=[^"]+">\d+</a>\))}mi
@@ -96,7 +97,12 @@ module MathMetadata
 
     def fetch_article( args={} )
       opts = {:id => nil, :title => "", :year => "", :authors => []}.merge(args)
-      url = self.class::ARTICLE_ID_URL % URI.escape(opts[:id].to_s.strip)
+      url = ""
+      unless opts[:id].to_s.strip.empty?
+        pattern = self.class::ARTICLE_ID_URL
+        pattern = self.class::ARTICLE_ID_AFST_URL if opts[:id] =~ /^AFST/mi
+        url = pattern % URI.escape(opts[:id].to_s.strip)
+      end
       form = {'submit' => " Start search "}
       if opts[:id].to_s.strip.empty?
         author = join_article_authors opts[:authors]

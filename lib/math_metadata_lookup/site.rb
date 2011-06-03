@@ -54,7 +54,7 @@ module MathMetadata
         articles << a unless a[:title].to_s.strip.empty?
       end
   
-      return nil if articles.size == 0
+      #return [] if articles.size == 0
       articles
     end
 
@@ -169,6 +169,7 @@ module MathMetadata
       articles = []
       page.scan(self.class::ARTICLE_ENTRY_RE).each do |match|
         a = article(:id => match[0]).first
+        next unless a
         articles << a unless a[:title].to_s.strip.empty?
       end
       articles

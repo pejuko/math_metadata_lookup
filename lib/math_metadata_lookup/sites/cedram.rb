@@ -1,7 +1,7 @@
 # -*-: coding: utf-8 -*-
 # vi: fenc=utf-8:expandtab:ts=2:sw=2:sts=2
 
-require 'rexml/document'
+require 'net/http'
 
 module MathMetadata
 
@@ -21,7 +21,8 @@ module MathMetadata
 
 
     ARTICLE_ID_URL = "http://aif.cedram.org/aif-bin/item?id=%s"
-    ARTICLE_URL = "http://www.cedram.org:80/cedram-bin/search?ti=%s&au=%s&py1=%s"
+    ARTICLE_URL = "http://www.cedram.org/cedram-bin/search?ti=%s&au=%s&py1=%s&lang=en"
+#    ARTICLE_URL = "http://www.cedram.org/cedram-bin/search"
 
     LIST_OF_ARTICLES_RE = %r{matches(.*?)</td>}mi
     ARTICLE_ENTRY_RE = %r{<a href="http://aif.cedram.org/aif-bin/item\?id=([^"]+)">Details</a>}mi
@@ -90,6 +91,57 @@ module MathMetadata
       end
 
       references
+    end
+
+
+    def fetch_article( args={} )
+      opts = {:id => nil, :title => "", :year => "", :authors => []}.merge(args)
+      url = self.class::ARTICLE_ID_URL % URI.escape(opts[:id].to_s.strip)
+      form = {'submit' => " Start search "}
+      if opts[:id].to_s.strip.empty?
+        author = join_article_authors opts[:authors]
+        title = opts[:title]
+        title = '' if not title.kind_of?(String)
+        title = MathMetadata.normalize_text(title)
+        title = nwords(title) if @options[:nwords]
+
+        form['ti'] = title
+        form['au'] = author unless author.empty?
+        form['py1'] = opts[:year].to_s
+        form['py2'] = ""
+        form['pages'] = ""
+        form['bibitems_text'] = ""
+        form['maxdocs'] = "300"
+        form['format'] = "short"
+        form['ti_op'] = "and"
+        form["au_op"] = "and"
+        form["bibitems.text_op"] = "and"
+
+        url = self.class::ARTICLE_URL % [URI.escape(title), author, opts[:year].to_s]
+#        url = self.class::ARTICLE_URL
+      else
+        return fetch_page(url, opts)
+      end
+      
+      uri = URI.parse(url)
+      puts uri if opts[:verbose]
+      req = Net::HTTP::Post.new(uri.path, {
+        'Host' => "www.cedram.org",
+        'User-Agent'=> "Mozilla/5.0 (X11; Linux x86_64; rv:2.0.1) Gecko/20110429 Firefox/4.0.1",
+        'Accept' => "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        'Accept-Language' => "cs,en;q=0.7,en-us;q=0.3",
+        'Accept-Encoding' => "gzip, deflated",
+        'Accept-Charset' => "UTF-8,*",
+        'Keep-Alive' => "115",
+        'Connection' => "keep-alive",
+        'Referer' => "http://www.cedram.org/cedram-bin/search",
+        'Content-Type' => "application/x-www-form-urlencoded",
+      })
+      req.set_form_data(form)
+      http = Net::HTTP.new(uri.host, uri.port)
+      resp = http.request(req)
+      page = normalize_page resp.body
+      page
     end
 
   end # MRev

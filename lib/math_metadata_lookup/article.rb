@@ -113,6 +113,7 @@ Ref.: #{idx+1}. #{[a[:authors]].flatten.join("; ")}: #{a[:title]}~
                     <publication>#{::CGI.escapeHTML ref[:publication].to_s}</publication>
                     <publisher>#{::CGI.escapeHTML ref[:publisher].to_s}</publisher>
                     <year>#{::CGI.escapeHTML ref[:year].to_s}</year>
+                    <range>#{::CGI.escapeHTML ref[:range].to_s}</range>
                 </reference>
 ~
       end
@@ -154,6 +155,7 @@ Ref.: #{idx+1}. #{[a[:authors]].flatten.join("; ")}: #{a[:title]}~
                 <span class="label">Publication:</span> <span class="publication">#{::CGI.escapeHTML ref[:publication].to_s}</span><br />
                 <span class="label">Publisher:</span> <span class="publisher">#{::CGI.escapeHTML ref[:publisher].to_s}</span><br />
                 <span class="label">Year:</span> <span class="year">#{::CGI.escapeHTML ref[:year].to_s}</span><br />
+                <span class="label">Pages:</span> <span class="range">#{::CGI.escapeHTML ref[:range].to_s}</span><br />
                 <span class="label">Id:</span> <span class="id">#{::CGI.escapeHTML ref[:id].to_s}</span><br />
             </div>
 ~

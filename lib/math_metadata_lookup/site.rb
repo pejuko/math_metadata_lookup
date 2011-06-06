@@ -58,6 +58,9 @@ module MathMetadata
       articles
     end
 
+    def to_json
+      ""
+    end
 
   protected
 

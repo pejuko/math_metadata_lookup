@@ -47,6 +47,15 @@ module MathMetadata
     end
 
 
+    def to_json(*args)
+      {
+        :number => @number,
+        :source => @source,
+        :article => @article
+      }.to_json(*args)
+    end
+
+
     def self.parse( ref_str )
       str = ref_str.dup
       if ref_str =~ %r~\s*[\[\(\{\/\\].*?[\]\)\}\/\\][:\.]?\s*(.*)~mi

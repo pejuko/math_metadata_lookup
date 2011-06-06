@@ -41,6 +41,11 @@ module MathMetadata
     end
 
 
+    def to_json(*args)
+      @metadata.to_json(*args)
+    end
+
+
     def to_text
       result = ""
       result += %~Id: #{@metadata[:id]}

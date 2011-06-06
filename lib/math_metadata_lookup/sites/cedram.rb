@@ -43,7 +43,7 @@ module MathMetadata
     ARTICLE_KEYWORDS_RE = %r{Keywords:(.*?)<div}mi
     ARTICLE_KEYWORD_RE = %r{([^,]+),?\s*}mi
     ARTICLE_REFERENCES_RE = %r{<P>\s*<B>\s*Bibliography\s*</B>\s*</P>\s*</DIV>\s*(.*?)\s*</td>}mi
-    ARTICLE_REFERENCE_RE = %r{\[\d+\](.*?)<BR>}mi
+    ARTICLE_REFERENCE_RE = %r{\[\d+\]\s*(.*?)(?:(?:<BR>)|(?:<br\s*/>)|(?:</div>))}mi
 
     def get_article_publication( page )
       page =~ ARTICLE_PUBLICATION_RE
@@ -59,33 +59,36 @@ module MathMetadata
       i = 0;
       refs.each do |r|
         i+=1
+        r.gsub!(/\r|\n/, ' ')
+        r.gsub!(/ +/,' ')
         ref = Reference.new nil, i
-        ref.source = r.gsub(/  +/,' ')
+        ref.source = r
         ref.article = Article.new
 
-        r =~ %r{<span class="atitle">(.*?)</span>}im
+        r =~ %r{<span class="(?:atitle|btitre)">(.*?)</span>}im
         ref.article.title = $1.to_s.strip
 
         ref.article.authors = []
         r.split(%r{<span class="bauteur">\s?(.*?)\s*</span>}).each do |a|
-          next if a.strip.empty? or a.strip == "-" or a.strip[0,1] == ','
+          next if a.strip.empty? or a.strip == "-" or [',', '&'].include?(a.strip[0,1])
           author = a.gsub /<.*?>/, ''
           ref.article.authors << author
         end
 
-        r =~ %r{<span class="brevue">(.*?)</span>}mi
+        r =~ %r{<span class="(?:brevue|bjournal)">(.*?)</span>}mi
         ref.article.publication = $1.strip if $1
 
+=begin
         r =~ %r{<bediteur>(.*?)</bediteur>}mi
         ref.article.publisher = $1.strip if $1
 
         r =~ %r{<blieued>(.*?)</blieued>}mi
         ref.article.place = $1.strip if $1
-
-        r =~ %r{<bannee>(.*?)</bannee>}mi
+=end
+        r =~ %r{(\d\d\d\d)}mi
         ref.article.year = $1.strip if $1
 
-        r =~ %r{<bpagedeb>(\d+)</bpagedeb>-<bpagefin>(\d+)</bpagefin>}mi
+        r =~ %r{(\d+)\-(\d+)}mi
         ref.article.range = "#{$1.strip}-#{$2.strip}" if $1
 
         references << ref

@@ -41,8 +41,8 @@ module MathMetadata
     ARTICLE_ISSN_RE = %r{xxxxxxxxxxxxxxxxx}mi
     ARTICLE_KEYWORDS_RE = %r{xxxxxxxxxxxxxxxxx}mi
     ARTICLE_KEYWORD_RE = %r{xxxxxxxxxxxxxxxxx}mi
-    ARTICLE_REFERENCES_RE = %r{<P>\s*<B>\s*Bibliography\s*</B>\s*</P>\s*</DIV>\s*(.*?)\s*</td>}mi
-    ARTICLE_REFERENCE_RE = %r{\[\d+\](.*?)<BR>}mi
+    ARTICLE_REFERENCES_RE = %r{<P>\s*<B>\s*Bibliography\s*</B>\s*</P>\s*</DIV>\s*(.*?\s*</td>)}mi
+    ARTICLE_REFERENCE_RE = %r{\[\d+\](.*?)(?:<BR>|</td>)}mi
 
     def get_article_references( page )
       references = []
@@ -61,7 +61,8 @@ module MathMetadata
 
         ref.article.authors = []
         r.split(%r{<span class="bauteur">\s?(.*?)\s*</span>}).each do |a|
-          next if a.strip.empty? or a.strip == "-" or a.strip[0,1] == ','
+          a.strip!
+          next if a.empty? or a.== "-" or [',', '&'].include?(a[0,1]) or a.downcase=='and'
           author = a.gsub /<.*?>/, ''
           ref.article.authors << author
         end

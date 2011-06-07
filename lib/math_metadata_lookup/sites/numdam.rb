@@ -31,8 +31,8 @@ module MathMetadata
     ARTICLE_LANGUAGE_RE = %r{xxxxxxxxxxxxxxx}mi
     ARTICLE_AUTHORS_RE = %r{<head>\s*(.*?)\s*</head>}mi
     ARTICLE_AUTHOR_RE = %r{<meta content="([^"]+)" name="DC.creator">}mi
-    ARTICLE_MSCS_RE = %r{xxxxxxxxxxxxxxxxx}mi
-    ARTICLE_MSC_RE = %r{xxxxxxxxxxxxxxx}mi
+    ARTICLE_MSCS_RE = %r{Class\. Math\.:\s*(.*?)\s*<br>}mi
+    ARTICLE_MSC_RE = %r{([^,]+)(?:,\s*)?}mi
     ARTICLE_PUBLICATION_RE = %r{<SPAN class="jtitle">(.*?)</SPAN>}mi
     ARTICLE_PUBLISHER_RE = %r{xxxxxxxxxxxxxxxxx}mi
     ARTICLE_RANGE_RE = %r{(\d+\-\d+)\s*<BR>\s*Full text}mi

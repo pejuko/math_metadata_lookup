@@ -20,7 +20,7 @@ module MathMetadata
 
 
     ARTICLE_ID_URL = "http://dml.cz/handle/10338.dmlcz/%s?show=full"
-    ARTICLE_URL = "http://dml.cz/advanced-search?num_search_field=10&results_per_page=100&scope=%%2F&field1=title&query1=%s&%s&conjunction2=AND&field2=year&query2=%s&submit=Go"
+    ARTICLE_URL = "http://dml.cz/advanced-search?num_search_field=10&results_per_page=100&scope=%%2F&field1=title&query1=%s%s&conjunction2=AND&field2=year&query2=%s&submit=Go"
 
     LIST_OF_ARTICLES_RE = %r{<ul class="bibliolist">(.*?)</ul>}mi
     ARTICLE_ENTRY_RE = %r{<li>.*?href="/handle/10338.dmlcz/(\d+)".*?</li>}mi
@@ -48,7 +48,7 @@ module MathMetadata
       i = 2
       authors.collect { |author| 
         i += 1
-        "conjunction#{i}=AND&field#{i}=author&query#{i}=#{URI.escape MathMetadata.normalize_name(author)}"
+        "&conjunction#{i}=AND&field#{i}=author&query#{i}=#{URI.escape MathMetadata.normalize_name(author)}"
       }.join("&")
     end
 

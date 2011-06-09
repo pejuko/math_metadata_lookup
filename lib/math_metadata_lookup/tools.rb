@@ -80,6 +80,7 @@ module MathMetadata
       str = remove_punctuation(str)
       str.gsub!(%r{\W+}, ' ')
       str.gsub!(%r{(?:the|a|of|)\s+}i, ' ')
+      str.gsub!(%r{\s+}, ' ')
       str.strip
     end
 

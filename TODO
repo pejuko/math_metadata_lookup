@@ -3,8 +3,6 @@ Tasks
 
 o cache
 o tests
-o json
-o yaml
 
 
 Completed
@@ -12,8 +10,8 @@ Completed
 
 * year argument
 * support for references
-* xml output
+* xml, yaml and json output
 * heuristic
   x joining results
   * guess relevant article if possible
-
+* sites: MathSciNet, Zentralblatt, Cedram, Numdam, DmlCZ

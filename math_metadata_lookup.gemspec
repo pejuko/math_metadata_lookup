@@ -6,7 +6,7 @@
 require 'rubygems'
 require 'find'
 
-spec = Gem::Specification.new do |s|
+@spec = Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.summary = "Search mathematical reviews sites and fetches metadata about articles."
   s.homepage = "http://github.com/pejuko/math_metadata_lookup"

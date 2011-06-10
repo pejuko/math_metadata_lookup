@@ -13,7 +13,7 @@ spec = Gem::Specification.new do |s|
   s.email = "pejuko@gmail.com"
   s.authors = ["Petr Kovar"]
   s.name = 'math_metadata_lookup'
-  s.version = '0.1.4'
+  s.version = '0.2.0'
   s.date = Time.now.strftime("%Y-%m-%d")
   s.add_dependency('unicode')
   s.add_dependency('unidecoder')
@@ -25,7 +25,7 @@ spec = Gem::Specification.new do |s|
   s.executables = ["math_metadata_lookup"]
   s.description = <<EOF
 This utility/library search mathematical reviews sites and fetches metadata about articles.
-It can return results as one of text, xml, html, yaml or ruby formats.
+It can return results as one of text, xml, html, yaml, json or ruby formats.
 EOF
 end
 

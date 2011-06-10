@@ -54,7 +54,7 @@ def print_help
   Examples:
 
   #{$0} article -t \"Sobolev embeddings with variable exponent. II\"
-  #{$0} article -t \"Sobolev embeddings\" -a \"Rakosnik, Jiri\" -a \"Edmunds, David\" -f html
+  #{$0} article -t \"Sobolev embeddings\" -a Rakosnik -a Edmunds -f html
   #{$0} author -a \"Vesely, Jiri\"
   #{$0} reference -r \"Kufner, A., John, O., and Fučík, S.: Function Spaces, Noordhoff, Leyden, and Academia, Prague, 1977\" -d 0.4
 "

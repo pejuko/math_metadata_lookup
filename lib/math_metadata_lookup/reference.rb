@@ -31,6 +31,8 @@ module MathMetadata
     ARTICLE_REFERENCE_10_RE = %r{([^:]+):\s*(.*?),\s*(.*?)\s*.*?}mi
     # 1=authors, 2=title, 3=place, 4=year
     ARTICLE_REFERENCE_11_RE = %r{([^:]+):\s*(.*),(.*?)\s+(\d{4})}mi
+    # 1=authors, 2=title
+#    ARTICLE_REFERENCE_12_RE = %r{([^:]+):\s*([^,]+),.*}mi
 
 
     attr_accessor :source, :article, :suffix, :number, :reg
@@ -58,7 +60,7 @@ module MathMetadata
 
     def self.parse( ref_str )
       str = ref_str.dup
-      if ref_str =~ %r~\s*[\[\(\{\/\\].*?[\]\)\}\/\\][:\.]?\s*(.*)~mi
+      if ref_str =~ %r~^\s*(?:\[.*?\]|\(.*?\)|\d+[\.]?)\s*(.*)~mi
         str = $1
       end
       article = Article.new
@@ -103,6 +105,9 @@ module MathMetadata
           when 11
             # 1=authors, 2=title, 3=place, 4=year
             found = [$1, $2, nil, $4, nil, nil, $3]
+#          when 12
+#            # 1=authors, 2=title, 3=place, 4=year
+#            found = [$1, $2, nil, nil, nil, nil, nil]
           end
           rnumber = j
           break

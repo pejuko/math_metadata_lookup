@@ -179,8 +179,17 @@ module MathMetadata
     end
 
 
+    # select first n words from string which are longer then 2 characters
     def nwords(s)
-      s.split(" ")[0...@options[:nwords].to_i].join(" ")
+      n = @options[:nwords].to_i
+      words = 0
+      s.split(" ").inject("") do |res,word|
+        if words < n
+          res << " " << word
+          words += 1 if word.size > 2
+        end
+        res.strip
+      end
     end
 
 

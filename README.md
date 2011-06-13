@@ -5,14 +5,15 @@ This utility search mathematical reviews sites and fetches metadata about articl
 It returns results as one of text, xml, html, yaml, json or ruby formats.
 It can work with LaTeX accent notation.
 
-Sites
-=====
+Supported sites
+===============
 
-* MathSciNet
-* Zentralblatt
-* Numdam
-* Cedram
-* DmlCZ
+* MathSciNet (mr)
+* Zentralblatt (zbl)
+* Numdam (numdam)
+* Cedram (cedram)
+* DmlCZ (dmlcz)
+* Bulgarian DML (basbg)
 
 
 Installation

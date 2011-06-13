@@ -32,7 +32,7 @@ module MathMetadata
     ARTICLE_AUTHOR_RE = %r{<meta\s* name="dc.creator"\s*content="([^"]+)".*?/>}mi
     ARTICLE_MSCS_RE = %r{<meta.*?Classiﬁcation:\s*(.*?)\s*".*?/>}mi
     ARTICLE_MSC_RE = %r{([^,]+)}mi
-    ARTICLE_PUBLICATION_RE = %r{xxxxx}mi
+    ARTICLE_PUBLICATION_RE = %r{<tr>\s*<td\s*class="metadataFieldLabel">\s*Appears in Collections:\s*</td><td\s*class="metadataFieldValue">\s*<a href="[^"]*">\s*(.*?)\s*</a>.*?</tr>}mi
     ARTICLE_PUBLISHER_RE = %r{<meta\s*name="DC.publisher"\s*content="([^"]+)".*?/>}mi
     ARTICLE_RANGE_RE = %r{<tr>\s*<td class="label">\s*Pages:\s*</td>\s*<td\s*class="value">([^ <]+)</td>\s*</tr>}mi
     ARTICLE_YEAR_RE = %r{td\s*class="metadataFieldLabel">\s*Issue Date:.*?</td>\s*<td\s*class="metadataFieldValue">\s*(.*?)\s*</td>}mi

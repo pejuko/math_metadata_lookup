@@ -126,8 +126,7 @@ module MathMetadata
         form["au_op"] = "and"
         form["bibitems.text_op"] = "and"
 
-        url = self.class::ARTICLE_URL % [URI.escape(title), author, opts[:year].to_s]
-#        url = self.class::ARTICLE_URL
+        url = build_article_url title, author, opts[:year].to_s
       else
         return fetch_page(url, opts)
       end

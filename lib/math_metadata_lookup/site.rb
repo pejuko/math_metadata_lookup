@@ -232,6 +232,10 @@ module MathMetadata
     def join_article_authors( authors )
       authors.collect { |author| URI.escape MathMetadata.normalize_name(author) }.join(';%20') || ''
     end
+
+    def build_article_url(title, author, year)
+      self.class::ARTICLE_URL % [URI.escape(title), author, year]
+    end
   
     def fetch_article( args={} )
       opts = {:id => nil, :title => "", :year => "", :authors => []}.merge(args)
@@ -242,7 +246,7 @@ module MathMetadata
         title = '' if not title.kind_of?(String)
         title = MathMetadata.normalize_text(title)
         title = nwords(title) if @options[:nwords]
-        url = self.class::ARTICLE_URL % [URI.escape(title), author, opts[:year].to_s]
+        url = build_article_url title, author, opts[:year].to_s
       end
   
       fetch_page(url, opts)

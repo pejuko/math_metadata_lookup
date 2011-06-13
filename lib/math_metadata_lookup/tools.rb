@@ -79,7 +79,7 @@ module MathMetadata
       str = str.to_ascii.downcase
       str = remove_punctuation(str)
       str.gsub!(%r{\W+}, ' ')
-      str.gsub!(%r{(?:the| a | of |^a )\s+}i, ' ')
+      str.gsub(%r{(?: the| a| of|^a|^the|^of)\s+}i, ' ')
       str.gsub!(%r{\s+}, ' ')
       str.strip
     end

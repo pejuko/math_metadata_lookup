@@ -19,6 +19,7 @@ require 'find'
   s.add_dependency('unidecoder')
   s.add_dependency('ya2yaml')
   s.add_dependency('json')
+  s.add_dependency('htmlentities')
   s.require_path = 'lib'
   s.files = ["bin/math_metadata_lookup", "README.md", "math_metadata_lookup.gemspec", "TODO", "Rakefile"]
   s.files += Dir["lib/**/*.rb", "resources/*"]

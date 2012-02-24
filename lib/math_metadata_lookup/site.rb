@@ -209,6 +209,7 @@ module MathMetadata
         page = coder.decode(page)
       end
 
+      page
     end
 
 

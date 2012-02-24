@@ -6,6 +6,7 @@ $KCODE='UTF8' if RUBY_VERSION < "1.9"
 
 require 'rake/gempackagetask'
 require 'rake/clean'
+require 'rspec/core/rake_task'
 
 CLEAN << "coverage" << "pkg" << "README.html" << "CHANGELOG.html" << '*.rbc' << "html/" << "yardoc/"
 
@@ -17,6 +18,7 @@ task :gem do |t|
   builder.build
 end
 
+RSpec::Core::RakeTask.new(:spec)
 
 docs = []
 

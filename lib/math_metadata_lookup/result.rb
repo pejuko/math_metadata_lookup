@@ -51,6 +51,21 @@ module MathMetadata
     end
 
 
+    def size
+      @metadata.size
+    end
+
+
+    def num_results
+      @metadata.inject(0){|s,m| s += m[:result].size}
+    end
+
+
+    def results
+      @metadata.inject([]){|s,m| s << m[:result]}.flatten
+    end
+
+
     def format( f=:ruby )
       self.send "to_#{f}"
     end
